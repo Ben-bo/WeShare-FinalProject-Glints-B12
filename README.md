@@ -8,7 +8,7 @@
 | POST   | /api/weShare/login       | login user to get token for authentication |
 | PUT    | /api/weShare/editProfile | API for edit user profile                  |
 
-# Last Update on (24 Juny 2021 | 01:17 WIB)
+# Last Update on (26 Juny 2021 | 01:17 WIB)
 
 # -----------------------------------------
 
