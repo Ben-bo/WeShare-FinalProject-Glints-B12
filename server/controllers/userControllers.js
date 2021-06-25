@@ -1,9 +1,10 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
+
 const routes = {};
 
 //===============================REGISTER====================================
-//register member and add to database
+//register user
 routes.register = async (req, res) => {
   const reqBoPass = req.body.password;
   const userEmail = req.body.email;
@@ -40,7 +41,7 @@ routes.register = async (req, res) => {
 };
 
 //===============================LOGIN===================================
-//user login should be need fill, username, email and password
+//user login
 routes.login = async (req, res, next) => {
   try {
     //getting email from body and compare with email on database
@@ -51,7 +52,7 @@ routes.login = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         statusText: "Not Found",
-        message: "Email not found, register needed!",
+        message: "Email not found, please register!",
       });
     }
     // verify the password
@@ -60,7 +61,7 @@ routes.login = async (req, res, next) => {
     if (!verifyPassword) {
       return res.status(401).json({
         statusText: "Unauthorized",
-        message: "Wrong password, check your password and try again!",
+        message: "Wrong password, please check your password and try again!",
       });
     }
     //proceed to GET TOKEN LOGIN
@@ -75,20 +76,17 @@ routes.login = async (req, res, next) => {
   }
 };
 
+//===============================LOGIN===================================
+//update User
 routes.putUser = async (req, res) => {
   try {
     const reqBoPass = req.body.password;
     const idParPut = req.params.id;
+
     const findUser = await User.findOne({ where: { id: idParPut } });
 
-    //   if (!req.files) {
-    //     return res.status(400).json({ message: "Please input your profile picture" });
-    //   }
-
-    //   const profilePicture = req.files.profilePicture;
-    //   const uploadPath = __dirname + "/../public/images/profilePictures/" + profilePicture.name;
     const user = await User.update(
-      { ...req.body, password: bcrypt.hashSync(reqBoPass, 10) /*profilePicture: `${profilePicture.name}`*/ },
+      { ...req.body, password: bcrypt.hashSync(reqBoPass, 10) },
       {
         where: {
           id: idParPut,
@@ -96,15 +94,10 @@ routes.putUser = async (req, res) => {
       }
     );
 
-    // profilePicture.mv(uploadPath, (err) => {
-    //   if (err) res.status(500).json({ message: err.message });
-    // });
-
     if (findUser) {
       res.status(200).json({
         statusText: "Updated",
         message: `User with ID: ${idParPut} has been updated!`,
-        detailUser: findUser.dataValues,
       });
     } else {
       res.status(404).json({

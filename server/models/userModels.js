@@ -5,10 +5,18 @@ module.exports = (sequelize, DataTypes) => {
   //User CLASS
   class User extends Model {
     static associate(models) {
-      // one User just can give only One review
-      //this.hasMany(models.Review, { foreignKey: "userId", onDelete: "cascade" });
-      //getting role for user from Role CLASS
-      //this.belongsTo(models.Role, { foreignKey: "roleId" });
+      //associate to Donature
+      User.hasMany(models.Donature, {
+        foreignKey: "userId",
+      });
+      //associate to Patient
+      User.hasMany(models.Patient, {
+        foreignKey: "userId",
+      });
+      //associate to OpenDonation
+      User.hasMany(models.OpenDonation, {
+        foreignKey: "userId",
+      });
     }
   }
   User.init(
@@ -28,22 +36,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      profilePicture: {
-        type: DataTypes.STRING,
-      },
+      //required
       password: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      //required
+      profilePicture: {
+        type: DataTypes.STRING,
+      },
       cardIdentityId: {
         type: DataTypes.BIGINT,
       },
       bornDate: {
         type: DataTypes.DATEONLY,
-        // get: function () {
-        //   return moment.utc(this.getDataValue("bornDate")).format("YYYY-MM-DD");
-        // },
       },
       bornPlace: {
         type: DataTypes.STRING,
@@ -51,11 +56,16 @@ module.exports = (sequelize, DataTypes) => {
       expiredDate: {
         type: DataTypes.DATEONLY,
       },
+      eKtpConfirmation: {
+        type: DataTypes.BOOLEAN,
+      },
+      //auto
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: new Date(),
       },
+      //auto
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,

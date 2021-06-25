@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("donatures", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -11,34 +11,31 @@ module.exports = {
       fullName: {
         type: Sequelize.STRING,
       },
-      //required & unique
-      email: {
-        type: Sequelize.STRING,
+      //required
+      quantity: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
+      },
+      comment: {
+        type: Sequelize.STRING,
       },
       //required
-      password: {
-        type: Sequelize.STRING,
+      donationTypeId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
         allowNull: false,
       },
-      profilePicture: {
-        type: Sequelize.STRING,
+      //required
+      patientId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        allowNull: false,
       },
-      cardIdentityId: {
-        type: Sequelize.BIGINT,
-      },
-      bornDate: {
-        type: Sequelize.DATEONLY,
-      },
-      bornPlace: {
-        type: Sequelize.STRING,
-      },
-      expiredDate: {
-        type: Sequelize.DATEONLY,
-      },
-      eKtpConfirmation: {
-        type: Sequelize.BOOLEAN,
+      //required
+      userId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        allowNull: false,
       },
       //auto
       createdAt: {
@@ -55,6 +52,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("donatures");
   },
 };

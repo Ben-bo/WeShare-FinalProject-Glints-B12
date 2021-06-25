@@ -1,44 +1,45 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("patients", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
       },
-      fullName: {
-        type: Sequelize.STRING,
-      },
-      //required & unique
-      email: {
+      //required
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       //required
-      password: {
+      Image: {
         type: Sequelize.STRING,
+      },
+      address: {
+        type: Sequelize.STRING,
+      },
+      description: {
+        type: Sequelize.STRING,
+      },
+      //required
+      categoryId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
         allowNull: false,
       },
-      profilePicture: {
-        type: Sequelize.STRING,
+      //required
+      donationTypeId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        allowNull: false,
       },
-      cardIdentityId: {
-        type: Sequelize.BIGINT,
-      },
-      bornDate: {
-        type: Sequelize.DATEONLY,
-      },
-      bornPlace: {
-        type: Sequelize.STRING,
-      },
-      expiredDate: {
-        type: Sequelize.DATEONLY,
-      },
-      eKtpConfirmation: {
-        type: Sequelize.BOOLEAN,
+      //required
+      userId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        allowNull: false,
       },
       //auto
       createdAt: {
@@ -55,6 +56,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("patients");
   },
 };
