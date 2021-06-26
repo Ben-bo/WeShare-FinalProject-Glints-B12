@@ -1,10 +1,16 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "Pramuka99",
-    "database": "dev_WeShare",
-    "host": "localhost",
-    "dialect": "postgres"
+    "username": "alzizufjxqgowu",
+    "password": "60aa7e84d460ac1d733dd86fa6836d0d0b248b55b3698ab65daf6c8924eb6011",
+    "database": "d89h2cu62pjen4",
+    "host": "ec2-54-197-100-79.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "test": {
     "username": "root",
