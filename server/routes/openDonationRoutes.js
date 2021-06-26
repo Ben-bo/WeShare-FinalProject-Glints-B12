@@ -24,5 +24,10 @@ router.get(
   tokenVerify.tokenVerify,
   donationController.getAllById
 );
+router.delete(
+  "/openDonation/delete/:openDonationId",
+  tokenVerify.tokenVerify,
+  donationController.delete
+);
 
 module.exports = router;
