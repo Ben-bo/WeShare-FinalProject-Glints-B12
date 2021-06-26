@@ -42,6 +42,30 @@ donationController.getAllByUser = async (req, res) => {
     });
   }
 };
+donationController.getAllById = async (req, res) => {
+  try {
+    let status = 200;
+    let message = "OK";
+    const openDonationId = req.params.openDonationId;
+    const dataDonation = await openDonationModel.findOne({
+      where: {
+        id: openDonationId,
+      },
+    });
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: dataDonation,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      status: 500,
+      message: "Failed to get Data Donation",
+      erorr: error,
+    });
+  }
+};
 donationController.update = async (req, res) => {
   try {
     let status = 200;

@@ -19,5 +19,10 @@ router.get(
   tokenVerify.tokenVerify,
   donationController.getAllByUser
 );
+router.get(
+  "/openDonation/my/:openDonationId",
+  tokenVerify.tokenVerify,
+  donationController.getAllById
+);
 
 module.exports = router;
