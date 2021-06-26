@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "Pramuka99",
+    "username": "namauser",
+    "password": "password",
     "database": "dev_WeShare",
     "host": "localhost",
     "dialect": "postgres"

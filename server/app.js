@@ -18,7 +18,8 @@ app.use(
     origin: "*",
   })
 );
-
+const donationRoute = require("./routes/openDonationRoutes");
+app.use(donationRoute);
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/weShare", userRoutes);
 
@@ -38,5 +39,7 @@ app.all("*", (req, res) =>
 );
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log(`SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`);
+  console.log(
+    `SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`
+  );
 });
