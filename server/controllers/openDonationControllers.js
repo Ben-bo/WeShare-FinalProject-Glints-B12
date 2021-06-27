@@ -1,10 +1,15 @@
-const { OpenDonation: openDonationModel } = require("../models");
+const {
+  OpenDonation: openDonationModel,
+  Category: categoryModel,
+  DonationType: donationTypeModel,
+} = require("../models");
 const donationController = {};
 donationController.create = async (req, res) => {
   try {
     let status = 200;
     let message = "OK";
-    const result = await openDonationModel.create({ ...req.body });
+    const result = await openDonationModel.create(req.body);
+    console.log(req.body);
     res.status(status).send({
       status: status,
       message: message,
@@ -52,6 +57,25 @@ donationController.getAllById = async (req, res) => {
         id: openDonationId,
       },
     });
+    res.status(status).send({
+      status: status,
+      message: message,
+      data: dataDonation,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      status: 500,
+      message: "Failed to get Data Donation",
+      erorr: error,
+    });
+  }
+};
+donationController.getAll = async (req, res) => {
+  try {
+    let status = 200;
+    let message = "OK";
+    const dataDonation = await openDonationModel.findAll();
     res.status(status).send({
       status: status,
       message: message,

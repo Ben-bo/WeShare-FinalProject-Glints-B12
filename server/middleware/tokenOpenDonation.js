@@ -14,7 +14,7 @@ exports.tokenVerify = async (req, res, next) => {
       });
     }
     const dataUser = jwt.verify(token, process.env.SECRET_KEY);
-    req.body.userId = dataUser.id;
+    req.user = dataUser.id;
     next();
   } catch (error) {
     console.log(error);

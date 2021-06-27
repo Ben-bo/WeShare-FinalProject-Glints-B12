@@ -3,9 +3,9 @@ const openDonationMiddleware = require("../middleware/openDonationMiddleware");
 const tokenVerify = require("../middleware/tokenOpenDonation");
 const donationController = require("../controllers/openDonationControllers");
 router.post(
-  "/openDonation",
-  openDonationMiddleware.donationValidate,
+  "/openDonation/create",
   tokenVerify.tokenVerify,
+  openDonationMiddleware.donationValidate,
   donationController.create
 );
 router.put(
@@ -18,6 +18,11 @@ router.get(
   "/openDonation/my",
   tokenVerify.tokenVerify,
   donationController.getAllByUser
+);
+router.get(
+  "/openDonation/",
+  tokenVerify.tokenVerify,
+  donationController.getAll
 );
 router.get(
   "/openDonation/my/:openDonationId",
