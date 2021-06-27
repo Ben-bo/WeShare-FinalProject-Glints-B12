@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "postgres",
-    "password": "Pramuka99",
-    "database": "dev_WeShare",
+    "password": "postgres",
+    "database": "weshare",
     "host": "localhost",
     "dialect": "postgres"
   },

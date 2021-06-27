@@ -22,6 +22,9 @@ app.use(
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/weShare", userRoutes);
 
+const donature = require("./routes/donatureRoutes");
+app.use("/api/weShare", donature);
+
 app.get("/", (req, res) => {
   res.send({
     status_code: 200,
@@ -38,5 +41,7 @@ app.all("*", (req, res) =>
 );
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log(`SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`);
+  console.log(
+    `SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`
+  );
 });
