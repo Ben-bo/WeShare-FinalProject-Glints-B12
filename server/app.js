@@ -24,10 +24,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const donationTypeRoutes = require("./routes/donationTypeRoutes")
 
-app.use("/api/weShare", userRoutes);
-app.use("/api/weShare",categoryRoutes);
-app.use("/api/weShare",patientRoutes);
-app.use("/api/weShare",donationTypeRoutes);
+app.use("/api/weShare", userRoutes,categoryRoutes,patientRoutes,donationTypeRoutes);
 
 app.get("/", (req, res) => {
   res.send({

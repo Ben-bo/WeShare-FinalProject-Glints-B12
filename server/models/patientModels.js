@@ -7,16 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //associate to Category
       Patient.belongsTo(models.Category, {
-        foreignKey: "categoryId",
-      });
+        foreignKey: "categoryId"});
       //associate to User
       Patient.belongsTo(models.User, {
-        foreignKey: "userId",
-      });
+        foreignKey: "userId"});
       //associate to DonationType
       Patient.belongsTo(models.DonationType, {
-        foreignKey: "donationTypeId",
-      });
+        foreignKey: "donationTypeId"});
+      //associate to Donature
+      Patient.hasMany(models.Donature, {
+        foreignKey: "patientId"});
     }
   }
   Patient.init(

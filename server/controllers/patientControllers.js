@@ -1,10 +1,10 @@
-const { Patient: patientModels } = require("../models");
+const { Patient } = require("../models");
 
-const patientController = {};
+const routes = {};
 
-patientController.createPatient = async (req, res) => {
+routes.createPatient = async (req, res) => {
   try {
-    const patients = await patientModels.create({
+    const patients = await Patient.create({
       ...req.body
     });
     const patientsResult = {
@@ -23,4 +23,4 @@ patientController.createPatient = async (req, res) => {
   }
 };
 
-module.exports = patientController;
+module.exports = routes;

@@ -2,8 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-const donationTypeController = require("../controllers/donationTypeControllers");
+const {createDonationType} = require("../controllers/donationTypeControllers");
 
-router.post("/donationType", donationTypeController.createDonationType);
+router.post("/donationType", createDonationType);
 
 module.exports = router;

@@ -2,11 +2,18 @@ const express= require("express");
 
 const router = express.Router();
 
-const categoryController = require("../controllers/categoryControllers");
+const {
+    getAllCategoryIncludePatient, 
+    getCategoryById, 
+    createCategory, 
+    editCategory,
+    getCategoryByIdIncludePatient
+} = require("../controllers/categoryControllers");
 
-router.get("/category", categoryController.getAllCategoryIncludePatient);
-router.get("/category/:id", categoryController.getCategoryById);
-router.post("/category", categoryController.createCategory);
-router.put("/category", categoryController.editCategory);
+router.get("/category", getAllCategoryIncludePatient);
+router.get("/category/details/:id", getCategoryById);
+router.get("/category/:id", getCategoryByIdIncludePatient);
+router.post("/category", createCategory);
+router.put("/category", editCategory);
 
 module.exports = router;

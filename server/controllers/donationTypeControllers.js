@@ -1,10 +1,10 @@
-const { DonationType: donationTypeModels } = require("../models");
+const { DonationType } = require("../models");
 
-const donationTypeController = {};
+const routes = {};
 
-donationTypeController.createDonationType = async (req, res) => {
+routes.createDonationType = async (req, res) => {
   try {
-    const donationType = await donationTypeModels.create({
+    const donationType = await DonationType.create({
       ...req.body
     });
     const donationTypeResult = {
@@ -23,4 +23,4 @@ donationTypeController.createDonationType = async (req, res) => {
   }
 };
 
-module.exports = donationTypeController;
+module.exports = routes;
