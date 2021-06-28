@@ -21,10 +21,11 @@ app.use(
 
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
-const patientRoutes = require("./routes/patientRoutes");
-const donationTypeRoutes = require("./routes/donationTypeRoutes")
+const donationTypeRoutes = require("./routes/donationTypeRoutes");
+const donatureRoutes = require("./routes/donatureRoutes");
+const openDonation = require("./routes/openDonationRoutes");
 
-app.use("/api/weShare", userRoutes,categoryRoutes,patientRoutes,donationTypeRoutes);
+app.use("/api/weShare", userRoutes, categoryRoutes, donationTypeRoutes, donatureRoutes, openDonation);
 
 app.get("/", (req, res) => {
   res.send({

@@ -1,4 +1,4 @@
-const { Category, DonationType, Patient, Donature } = require("../models");
+const { Category, DonationType, OpenDonation, Donature } = require("../models");
 
 const routes = {};
 
@@ -8,7 +8,7 @@ const routes = {};
 routes.getAllCategoryIncludePatient = async (req, res) => {
   try {
     const category = await Category.findAll({
-      include: [{ model: Patient }]
+      include: [{ model: OpenDonation }]
     });
     const categoryResult = {
       statusCode: 200,
@@ -32,7 +32,7 @@ routes.getCategoryByIdIncludePatient = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findAll({
-      include : [{ model: Patient, include : [Donature]}],
+      include : [{ model: OpenDonation, include : [Donature]}],
       where: { id: categoryId }});
     if(category) {
       const categoryResult = {
@@ -64,7 +64,7 @@ routes.getCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findAll({
-      include: [{ model:DonationType, include : [{ model: Patient, include : [Donature]}]}],
+      include: [{ model:DonationType, include : [{ model: OpenDonation, include : [Donature]}]}],
       where: { id: categoryId }});
     if(category) {
       const categoryResult = {

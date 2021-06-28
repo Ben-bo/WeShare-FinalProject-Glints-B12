@@ -7,6 +7,7 @@ const routes = {};
 //register user
 routes.register = async (req, res) => {
   const reqBoPass = req.body.password;
+  const confirmPass = req.body.confirmPassword;
   const userEmail = req.body.email;
   try {
     const findEmail = await User.findOne({ where: { email: userEmail } });
@@ -16,15 +17,22 @@ routes.register = async (req, res) => {
         messsage: "Email already exist on server, please login!",
       });
     } else {
+      if (reqBoPass !== confirmPass) {
+        return res.status(409).json({
+          statusText: "Conflict",
+          messsage: "Password didn't match, please try again!",
+        });
+      }
       const encryptUserPass = await User.create({
         ...req.body,
         password: bcrypt.hashSync(reqBoPass, 10),
+        confirmPassword: bcrypt.hashSync(reqBoPass, 10),
       });
       req.user = encryptUserPass;
       const userResult = {
         statusCode: 200,
         statusText: "Success",
-        message: "Register Success, please login!",
+        message: "Register Success!",
         data: {
           userDetails: encryptUserPass,
         },
@@ -52,7 +60,7 @@ routes.login = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({
         statusText: "Not Found",
-        message: "Email not found, please register!",
+        message: "Incorrect email, please check it and try again!",
       });
     }
     // verify the password
@@ -76,34 +84,40 @@ routes.login = async (req, res, next) => {
   }
 };
 
-//===============================LOGIN===================================
+//===============================UPDATE USER===================================
 //update User
 routes.putUser = async (req, res) => {
   try {
     const reqBoPass = req.body.password;
     const idParPut = req.params.id;
+    const confirmPass = req.body.confirmPassword;
 
     const findUser = await User.findOne({ where: { id: idParPut } });
-
-    const user = await User.update(
-      { ...req.body, password: bcrypt.hashSync(reqBoPass, 10) },
-      {
-        where: {
-          id: idParPut,
-        },
-      }
-    );
-
-    if (findUser) {
-      res.status(200).json({
-        statusText: "Updated",
-        message: `User with ID: ${idParPut} has been updated!`,
+    if (reqBoPass !== confirmPass || confirmPass == null) {
+      return res.status(409).json({
+        statusText: "Conflict",
+        messsage: "Password didn't match, please try again!",
       });
     } else {
-      res.status(404).json({
-        statusText: "Not Found",
-        message: `User with ID: ${idParPut} not found, please try again`,
-      });
+      if (findUser) {
+        await User.update(
+          { ...req.body, password: bcrypt.hashSync(reqBoPass, 10), confirmPassword: bcrypt.hashSync(reqBoPass, 10) },
+          {
+            where: {
+              id: idParPut,
+            },
+          }
+        );
+        res.status(200).json({
+          statusText: "Updated",
+          message: `User with ID: ${idParPut} has been updated!`,
+        });
+      } else {
+        res.status(404).json({
+          statusText: "Not Found",
+          message: `User with ID: ${idParPut} not found, please try again`,
+        });
+      }
     }
   } catch (err) {
     res.status(500).json({
