@@ -3,30 +3,30 @@ const openDonationMiddleware = require("../middleware/openDonationMiddleware");
 const tokenVerify = require("../middleware/tokenOpenDonation");
 const donationController = require("../controllers/openDonationControllers");
 router.post(
-  "/openDonation/create",
+  "/api/openDonation/create",
   tokenVerify.tokenVerify,
   openDonationMiddleware.donationValidate,
   donationController.create
 );
 router.put(
-  "/openDonation/update/:openDonationId",
+  "/api/openDonation/update/:openDonationId",
   openDonationMiddleware.donationValidate,
   tokenVerify.tokenVerify,
   donationController.update
 );
 router.get(
-  "/openDonation/my",
+  "/api/openDonation/my",
   tokenVerify.tokenVerify,
   donationController.getAllByUser
 );
-router.get("/openDonation/", donationController.getAll);
+router.get("/api/openDonation/", donationController.getAll);
 router.get(
-  "/openDonation/my/:openDonationId",
+  "/api/openDonation/detail/:openDonationId",
   tokenVerify.tokenVerify,
   donationController.getAllById
 );
 router.delete(
-  "/openDonation/delete/:openDonationId",
+  "/api/openDonation/delete/:openDonationId",
   tokenVerify.tokenVerify,
   donationController.delete
 );
