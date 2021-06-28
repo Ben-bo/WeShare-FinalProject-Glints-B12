@@ -1,14 +1,14 @@
-const { Category: categoryModels, Patient: patientModels, DonationType: donationTypeModels, Donature: donatureModels } = require("../models");
+const { Category, DonationType, OpenDonation, Donature } = require("../models");
 
-const categoryController = {};
+const routes = {};
 
 /**
  * Get all category include patient
  */
-categoryController.getAllCategoryIncludePatient = async (req, res) => {
+routes.getAllCategoryIncludePatient = async (req, res) => {
   try {
-    const category = await categoryModels.findAll({
-      include: [{ model: patientModels }]
+    const category = await Category.findAll({
+      include: [{ model: OpenDonation }]
     });
     const categoryResult = {
       statusCode: 200,
@@ -26,17 +26,46 @@ categoryController.getAllCategoryIncludePatient = async (req, res) => {
 };
 
 /**
- * Get category by id include patients
- */
-
-categoryController.getCategoryById = async (req, res) => {
+ * Get category by id iclude patient
+*/
+routes.getCategoryByIdIncludePatient = async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const category = await categoryModels.findOne({
-      where: { id: categoryId },
-      //include: [{model: donationTypeModels, include: [patientModels] }]
-      include: [{ model:patientModels }]
+    const category = await Category.findAll({
+      include : [{ model: OpenDonation, include : [Donature]}],
+      where: { id: categoryId }});
+    if(category) {
+      const categoryResult = {
+        statusCode: 200,
+        statusText: "Success",
+        message: "Show donation by id categories",
+        data: category
+      }
+      res.json(categoryResult);
+    }
+    else {
+      res.status(500).json('Data not found')
+    }
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+    statusText: "Internal Server Error",
+    message: err.message,
     });
+  }
+};
+
+/**
+ * Get category by id include donationType, patients and donature
+ */
+
+routes.getCategoryById = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const category = await Category.findAll({
+      include: [{ model:DonationType, include : [{ model: OpenDonation, include : [Donature]}]}],
+      where: { id: categoryId }});
     if(category) {
       const categoryResult = {
         statusCode: 200,
@@ -62,9 +91,9 @@ categoryController.getCategoryById = async (req, res) => {
 /**
  * Create categories
  */
-categoryController.createCategory = async(req, res) => {
+routes.createCategory = async(req, res) => {
   try {
-    const createCategory = await categoryModels.create({
+    const createCategory = await Category.create({
         ...req.body
     });
     const categoryResult = {
@@ -86,10 +115,10 @@ categoryController.createCategory = async(req, res) => {
 /**
  * edit category by id
  */
-categoryController.editCategory = async (req, res) => {
+routes.editCategory = async (req, res) => {
   try {
     const categoryId  = req.body.id;
-    const getCategoryDetails = await categoryModels.update(req.body,{
+    const getCategoryDetails = await Category.update(req.body,{
       where: {
         id: categoryId
       },
@@ -110,4 +139,4 @@ categoryController.editCategory = async (req, res) => {
   }
 };
 
-module.exports = categoryController;
+module.exports = routes;

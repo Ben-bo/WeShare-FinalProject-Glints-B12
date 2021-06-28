@@ -18,18 +18,15 @@ app.use(
     origin: "*",
   })
 );
-
+const donationRoute = require("./routes/openDonationRoutes");
+app.use(donationRoute);
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
-const patientRoutes = require("./routes/patientRoutes");
-const donationTypeRoutes = require("./routes/donationTypeRoutes")
+const donationTypeRoutes = require("./routes/donationTypeRoutes");
+const donatureRoutes = require("./routes/donatureRoutes");
+const openDonation = require("./routes/openDonationRoutes");
 
-app.use("/api/weShare", userRoutes);
-app.use("/api/weShare",categoryRoutes);
-app.use("/api/weShare",patientRoutes);
-app.use("/api/weShare",donationTypeRoutes);
-
-
+app.use("/api/weShare", userRoutes, categoryRoutes, donationTypeRoutes, donatureRoutes, openDonation);
 
 app.get("/", (req, res) => {
   res.send({
@@ -47,5 +44,7 @@ app.all("*", (req, res) =>
 );
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log(`SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`);
+  console.log(
+    `SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`
+  );
 });
