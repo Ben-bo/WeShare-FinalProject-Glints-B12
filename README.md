@@ -12,9 +12,6 @@
 | GET    | /api/weShare/category/details/:id | API for get category by id details           |
 | POST   | /api/weShare/addCategory          | API for create category (developer only)     |
 | PUT    | /api/weShare/editCategory         | API for edit category by id (developer only) |
-| POST   | /api/weShare/addPatient           | API for create new pation (Token Required)   |
-| GET    | /api/weShare/getAllPatients       | get all patients                             |
-| GET    | /api/weShare/patient%donature     | get all patient include Donature             |
 | POST   | /api/weShare/addDonature          | create new donature                          |
 | POST   | /api/weShare/addOpenDonation      | create new Open Donation                     |
 
