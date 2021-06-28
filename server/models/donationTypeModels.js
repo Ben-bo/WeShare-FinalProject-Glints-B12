@@ -7,8 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //associate to Category
       DonationType.belongsTo(models.Category, {
-        foreignKey: "categoryId",
-      });
+        foreignKey: "categoryId"});
       //associate to OpenDonation
       DonationType.hasMany(models.OpenDonation, {
         foreignKey: "donationTypeId",
@@ -16,11 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       //associate to Donature
       DonationType.hasMany(models.Donature, {
         foreignKey: "donationTypeId",
-      });
-      //associate to Patient
-      DonationType.hasMany(models.Patient, {
-        foreignKey: "donationTypeId",
-      });
+     });
     }
   }
   DonationType.init(
@@ -32,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       donationType: {
+        type: DataTypes.STRING,
+      },
+      image: {
         type: DataTypes.STRING,
       },
       //required

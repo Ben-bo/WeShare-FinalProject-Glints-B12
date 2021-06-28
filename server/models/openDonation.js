@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       OpenDonation.belongsTo(models.DonationType, {
         foreignKey: "donationTypeId",
       });
+      OpenDonation.hasMany(models.Donature, {
+        foreignKey: "openDonationId",
+      });
     }
   }
   OpenDonation.init(

@@ -21,7 +21,12 @@ app.use(
 const donationRoute = require("./routes/openDonationRoutes");
 app.use(donationRoute);
 const userRoutes = require("./routes/userRoutes");
-app.use("/api/weShare", userRoutes);
+const categoryRoutes = require("./routes/categoryRoutes");
+const donationTypeRoutes = require("./routes/donationTypeRoutes");
+const donatureRoutes = require("./routes/donatureRoutes");
+const openDonation = require("./routes/openDonationRoutes");
+
+app.use("/api/weShare", userRoutes, categoryRoutes, donationTypeRoutes, donatureRoutes, openDonation);
 
 app.get("/", (req, res) => {
   res.send({

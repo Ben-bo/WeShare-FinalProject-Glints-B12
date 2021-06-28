@@ -11,6 +11,9 @@ module.exports = {
       donationType: {
         type: Sequelize.STRING,
       },
+      image: {
+        type: Sequelize.STRING,
+      },
       //required
       categoryId: {
         type: Sequelize.INTEGER,
