@@ -93,7 +93,7 @@ routes.getCategoryById = async (req, res) => {
  */
 routes.createCategory = async(req, res) => {
   try {
-    const createCategory = await categoryModels.create({
+    const createCategory = await Category.create({
         ...req.body
     });
     const categoryResult = {
@@ -118,7 +118,7 @@ routes.createCategory = async(req, res) => {
 routes.editCategory = async (req, res) => {
   try {
     const categoryId  = req.body.id;
-    const getCategoryDetails = await categoryModels.update(req.body,{
+    const getCategoryDetails = await Category.update(req.body,{
       where: {
         id: categoryId
       },
