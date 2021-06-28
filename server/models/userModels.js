@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Donature, {
         foreignKey: "userId",
       });
-      //associate to Patient
-      User.hasMany(models.Patient, {
-        foreignKey: "userId",
-      });
       //associate to OpenDonation
       User.hasMany(models.OpenDonation, {
         foreignKey: "userId",

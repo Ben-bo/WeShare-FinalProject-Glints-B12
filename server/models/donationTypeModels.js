@@ -15,11 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       //associate to Donature
       DonationType.hasMany(models.Donature, {
         foreignKey: "donationTypeId",
-      });
-      //associate to Patient
-      DonationType.hasMany(models.Patient, {
-        foreignKey: "donationTypeId"});
-      
+     });
     }
   }
   DonationType.init(

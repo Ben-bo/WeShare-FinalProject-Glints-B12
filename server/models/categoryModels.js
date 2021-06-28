@@ -12,9 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       Category.hasMany(models.OpenDonation, {
         foreignKey: "categoryId",
       });
-     // associate to Patient
-      Category.hasMany(models.Patient, {
-        foreignKey: "categoryId"});
     }
   }
   Category.init(
