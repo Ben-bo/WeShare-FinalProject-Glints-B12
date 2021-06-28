@@ -19,11 +19,7 @@ router.get(
   tokenVerify.tokenVerify,
   donationController.getAllByUser
 );
-router.get(
-  "/openDonation/",
-  tokenVerify.tokenVerify,
-  donationController.getAll
-);
+router.get("/openDonation/", donationController.getAll);
 router.get(
   "/openDonation/my/:openDonationId",
   tokenVerify.tokenVerify,
