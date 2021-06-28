@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
       });
       //associate to Patient
-      Donature.belongsTo(models.Patient, {
-        foreignKey: "patientId",
+      Donature.belongsTo(models.OpenDonation, {
+        foreignKey: "openDonationId",
       });
     }
   }
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       //required
-      patientId: {
+      openDonationId: {
         type: DataTypes.INTEGER,
         foreignKey: true,
         allowNull: false,

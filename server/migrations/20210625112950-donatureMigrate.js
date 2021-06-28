@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false,
       },
       //required
-      patientId: {
+      openDonationId: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         allowNull: false,
