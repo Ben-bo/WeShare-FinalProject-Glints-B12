@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
       donationType: {
         type: DataTypes.STRING,
       },
+      image: {
+        type: DataTypes.STRING,
+      },
       //required
       categoryId: {
         type: DataTypes.INTEGER,
