@@ -40,4 +40,26 @@ routes.getTokenLogin = async (req, res) => {
   }
 };
 
+routes.checkUser = async (req, res, next) => {
+  try {
+    const findUserId = req.body.userId;
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+    if (decoded.userId == findUserId) {
+      return next();
+    } else {
+      res.status(401).json({
+        statusText: "Unauthorized",
+        message: "Sorry you are not recognized for doing this request, please register before doing this action!",
+      });
+    }
+  } catch (err) {
+    // If error it will make status code 500 (Internal Server Error) and send the error message
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
 module.exports = routes;
