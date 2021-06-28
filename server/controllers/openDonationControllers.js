@@ -2,7 +2,9 @@ const {
   OpenDonation: openDonationModel,
   Category: categoryModel,
   DonationType: donationTypeModel,
+  Donature: DonatureModel,
 } = require("../models");
+const donatureModels = require("../models/donatureModels");
 const donationController = {};
 donationController.create = async (req, res) => {
   try {
@@ -28,11 +30,16 @@ donationController.getAllByUser = async (req, res) => {
     let status = 200;
     let message = "OK";
     const userId = req.body.userId;
-    const dataDonation = await openDonationModel.findAll({
-      where: {
-        userId,
+    const dataDonation = await openDonationModel.findAll(
+      {
+        include: [{ model: categoryModel }, { model: donationTypeModel }],
       },
-    });
+      {
+        where: {
+          userId,
+        },
+      }
+    );
     res.status(status).send({
       status: status,
       message: message,
@@ -53,9 +60,13 @@ donationController.getAllById = async (req, res) => {
     let message = "OK";
     const openDonationId = req.params.openDonationId;
     const dataDonation = await openDonationModel.findOne({
-      where: {
-        id: openDonationId,
-      },
+      include: [
+        {
+          model: categoryModel,
+          include: [{ model: DonationType, include: [donatureModels] }],
+        },
+      ],
+      where: { id: openDonationId },
     });
     res.status(status).send({
       status: status,
@@ -75,7 +86,9 @@ donationController.getAll = async (req, res) => {
   try {
     let status = 200;
     let message = "OK";
-    const dataDonation = await openDonationModel.findAll();
+    const dataDonation = await openDonationModel.findAll({
+      include: [{ model: categoryModel }, { model: donationTypeModel }],
+    });
     res.status(status).send({
       status: status,
       message: message,
