@@ -4,19 +4,40 @@ const {
   DonationType: donationTypeModel,
   Donature: DonatureModel,
 } = require("../models");
-
+const { cloudinary } = require("../config/cloudinary");
+// const path = require("path");
 const donationController = {};
 donationController.create = async (req, res) => {
   try {
-    let status = 200;
-    let message = "OK";
-    const result = await openDonationModel.create(req.body);
-    console.log(req.body);
-    res.status(status).send({
-      status: status,
-      message: message,
-      data: result,
-    });
+    const errorCek = req.error;
+    if (errorCek) {
+      res.status(500).send({ status: 500, message: errorCek });
+    } else {
+      let status = 200;
+      let message = "OK";
+      const fileStr = req.file.path;
+      const uploadRes = await cloudinary.uploader.upload(fileStr, {
+        upload_preset: "dev_setup",
+      });
+      const data = {
+        donationName: req.body.donationName,
+        image: uploadRes.secure_url,
+        description: req.body.description,
+        donationNeeded: req.body.donationNeeded,
+        expiredDate: req.body.expiredDate,
+        categoryId: req.body.categoryId,
+        donationTypeId: req.body.donationTypeId,
+        userId: req.body.userId,
+      };
+      // res.send(data);
+      const result = await openDonationModel.create(data);
+      console.log(req.body);
+      res.status(status).send({
+        status: status,
+        message: message,
+        data: result,
+      });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -58,7 +79,7 @@ donationController.getAllById = async (req, res) => {
   try {
     let status = 200;
     let message = "OK";
-    const openDonationId = req.params.openDonationId;
+    const openDonationId = req.params.id;
     const dataDonation = await openDonationModel.findOne({
       include: [{ model: categoryModel }, donationTypeModel],
       where: { id: openDonationId },
