@@ -22,7 +22,6 @@ router.get(
 router.get("/openDonation/", donationController.getAll);
 router.get(
   "/openDonation/detail/:openDonationId",
-  tokenVerify.tokenVerify,
   donationController.getAllById
 );
 router.delete(
