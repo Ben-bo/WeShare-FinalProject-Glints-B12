@@ -7,8 +7,8 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 // app.use(logger("dev"));
 
 //app.use(express.static("public"));
@@ -26,7 +26,14 @@ const donationTypeRoutes = require("./routes/donationTypeRoutes");
 const donatureRoutes = require("./routes/donatureRoutes");
 const openDonation = require("./routes/openDonationRoutes");
 
-app.use("/api/weShare", userRoutes, categoryRoutes, donationTypeRoutes, donatureRoutes, openDonation);
+app.use(
+  "/api/weShare",
+  userRoutes,
+  categoryRoutes,
+  donationTypeRoutes,
+  donatureRoutes,
+  openDonation
+);
 
 app.get("/", (req, res) => {
   res.send({
