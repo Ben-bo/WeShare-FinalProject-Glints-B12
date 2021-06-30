@@ -12,10 +12,12 @@ exports.tokenVerify = async (req, res, next) => {
         statusText: "Bad Request",
         message: validateAuth.error.message,
       });
+    } else {
+      const dataUser = jwt.verify(token, process.env.SECRET_KEY);
+      console.log(dataUser);
+      req.body.userId = dataUser.userId;
+      next();
     }
-    const dataUser = jwt.verify(token, process.env.SECRET_KEY);
-    req.user = dataUser.id;
-    next();
   } catch (error) {
     console.log(error);
     res.send({
