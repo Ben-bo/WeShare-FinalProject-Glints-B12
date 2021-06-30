@@ -20,7 +20,8 @@
 | GET    | /api/weShare/OpenDonation                        | get all Open Donation                        |
 | GET    | /api/weShare/OpenDonation/:idOpenDonation        | detail Open Donation                         |
 | PUT    | /api/weShare/OpenDonation/update/:idOpenDonation | update Open Donation                         |
-| DELETE | /api/weShare/OpenDonation/delete/:idOpenDonation | delete Open Donation                         |
+| DELETE | /api/weShare/OpenDonation/delete/:idOpenDonation | delete Open Donation              
+| GET    | /api/weShare/OpenDonation/my        | Get openDonation by id user                        |           |
 
 # Last Update on (29 Juny 2021 | 23:18 WIB)
 
