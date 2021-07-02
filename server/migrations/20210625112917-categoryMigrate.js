@@ -11,6 +11,9 @@ module.exports = {
       categoryName: {
         type: Sequelize.STRING,
       },
+      image: {
+        type: Sequelize.STRING,
+      },
       //auto
       createdAt: {
         type: Sequelize.DATE,

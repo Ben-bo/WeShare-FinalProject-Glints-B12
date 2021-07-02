@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       categoryName: {
         type: DataTypes.STRING,
       },
+      image: {
+        type: DataTypes.STRING,
+      },
       //auto
       createdAt: {
         type: DataTypes.DATE,
