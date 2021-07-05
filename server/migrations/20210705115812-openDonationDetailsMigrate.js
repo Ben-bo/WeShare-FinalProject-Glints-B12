@@ -1,18 +1,22 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("donationTypes", {
+    await queryInterface.createTable("openDonationDetails", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
       },
-      typeName: {
-        type: Sequelize.STRING,
+      openDonationId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
-      icon: {
-        type: Sequelize.STRING,
+      donationTypeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
       //auto
       createdAt: {
@@ -29,6 +33,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("donationTypes");
+    await queryInterface.dropTable("openDonationDetails");
   },
 };

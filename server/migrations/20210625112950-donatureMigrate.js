@@ -8,31 +8,13 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
       },
-      fullName: {
-        type: Sequelize.STRING,
-      },
-      //required
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      comment: {
-        type: Sequelize.STRING,
-      },
-      //required
-      donationTypeId: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        allowNull: false,
-      },
-      //required
-      openDonationId: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        allowNull: false,
-      },
       //required
       userId: {
+        type: Sequelize.INTEGER,
+        foreignKey: true,
+        allowNull: false,
+      },
+      openDonationId: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         allowNull: false,

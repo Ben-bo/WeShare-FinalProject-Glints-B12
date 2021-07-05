@@ -24,19 +24,16 @@ module.exports = {
         allowNull: false,
       },
       donationNeeded: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+      },
+      isUrgent: {
+        type: Sequelize.BOOLEAN,
       },
       expiredDate: {
         type: Sequelize.DATEONLY,
       },
       //required
       categoryId: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        allowNull: false,
-      },
-      //required
-      donationTypeId: {
         type: Sequelize.INTEGER,
         foreignKey: true,
         allowNull: false,

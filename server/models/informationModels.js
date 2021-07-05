@@ -2,28 +2,20 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  //Donature CLASS
-  class Donature extends Model {
+  //Category CLASS
+  class Information extends Model {
     static associate(models) {
-      //associate to Information
-      Donature.hasOne(models.Information, {
+      //associate to DonationType
+      Information.belongsTo(models.DonationType, {
+        foreignKey: "donationTypeId",
+      });
+      //associate to Donature
+      Information.belongsTo(models.Donature, {
         foreignKey: "donatureId",
-      });
-      //associate to PaymentMethod
-      Donature.hasOne(models.PaymentMethod, {
-        foreignKey: "donatureId",
-      });
-      //associate to User
-      Donature.belongsTo(models.User, {
-        foreignKey: "userId",
-      });
-      //associate to OpenDonation
-      Donature.belongsTo(models.OpenDonation, {
-        foreignKey: "openDonationId",
       });
     }
   }
-  Donature.init(
+  Information.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -31,16 +23,27 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
       },
-      //required
-      userId: {
+      amount: {
         type: DataTypes.INTEGER,
-        foreignKey: true,
-        allowNull: false,
       },
-      openDonationId: {
+      unAmount: {
+        type: DataTypes.STRING,
+      },
+      notes: {
+        type: DataTypes.STRING,
+      },
+      isAnonymous: {
+        type: DataTypes.BOOLEAN,
+      },
+      donationTypeId: {
         type: DataTypes.INTEGER,
-        foreignKey: true,
         allowNull: false,
+        foreignKey: true,
+      },
+      donatureId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
       //auto
       createdAt: {
@@ -57,10 +60,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Donature",
-      tableName: "donatures",
+      modelName: "Information",
+      tableName: "informations",
     }
   );
 
-  return Donature;
+  return Information;
 };

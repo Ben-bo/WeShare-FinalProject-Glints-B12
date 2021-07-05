@@ -41,23 +41,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      profilePicture: {
+      image: {
         type: DataTypes.STRING,
       },
-      cardIdentityId: {
+      NIK: {
         type: DataTypes.BIGINT,
       },
-      bornDate: {
+      bithDate: {
         type: DataTypes.DATEONLY,
       },
       bornPlace: {
         type: DataTypes.STRING,
       },
-      expiredDate: {
+      nikExpired: {
         type: DataTypes.DATEONLY,
       },
-      eKtpConfirmation: {
+      isEktp: {
         type: DataTypes.BOOLEAN,
+      },
+      ktpPicture: {
+        type: DataTypes.STRING,
       },
       //auto
       createdAt: {

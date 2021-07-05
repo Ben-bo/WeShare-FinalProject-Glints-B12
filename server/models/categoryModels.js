@@ -5,11 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   //Category CLASS
   class Category extends Model {
     static associate(models) {
-      //associate to DonationType
-      Category.hasMany(models.DonationType, {
-        foreignKey: "categoryId"});
       //associate to OpenDonation
-      Category.hasMany(models.OpenDonation, {
+      Category.hasOne(models.OpenDonation, {
         foreignKey: "categoryId",
       });
     }
