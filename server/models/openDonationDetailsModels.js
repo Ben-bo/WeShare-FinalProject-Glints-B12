@@ -3,15 +3,19 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   //Category CLASS
-  class Category extends Model {
+  class OpenDonationDetails extends Model {
     static associate(models) {
       //associate to OpenDonation
-      Category.hasOne(models.OpenDonation, {
-        foreignKey: "categoryId",
+      OpenDonationDetails.belongsTo(models.OpenDonation, {
+        foreignKey: "openDonationId",
+      });
+      //associate to DonationType
+      OpenDonationDetails.belongsTo(models.DonationType, {
+        foreignKey: "donationTypeId",
       });
     }
   }
-  Category.init(
+  OpenDonationDetails.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -19,11 +23,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
       },
-      categoryName: {
-        type: DataTypes.STRING,
+      openDonationId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
-      icon: {
-        type: DataTypes.STRING,
+      donationTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
       //auto
       createdAt: {
@@ -40,10 +48,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Category",
-      tableName: "categories",
+      modelName: "OpenDonationDetails",
+      tableName: "openDonationDetails",
     }
   );
 
-  return Category;
+  return OpenDonationDetails;
 };

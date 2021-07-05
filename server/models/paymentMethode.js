@@ -3,15 +3,15 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   //Category CLASS
-  class Category extends Model {
+  class PaymentMethod extends Model {
     static associate(models) {
-      //associate to OpenDonation
-      Category.hasOne(models.OpenDonation, {
-        foreignKey: "categoryId",
+      //associate to Donature
+      PaymentMethod.belongsTo(models.Donature, {
+        foreignKey: "donatureId",
       });
     }
   }
-  Category.init(
+  PaymentMethod.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -19,11 +19,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
       },
-      categoryName: {
+      description: {
         type: DataTypes.STRING,
       },
-      icon: {
-        type: DataTypes.STRING,
+      donatureId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
       //auto
       createdAt: {
@@ -40,10 +42,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Category",
-      tableName: "categories",
+      modelName: "PaymentMethod",
+      tableName: "paymentMethods",
     }
   );
 
-  return Category;
+  return PaymentMethod;
 };
