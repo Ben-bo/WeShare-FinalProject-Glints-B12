@@ -8,50 +8,48 @@ const routes = {};
 routes.getAllCategoryIncludePatient = async (req, res) => {
   try {
     const category = await Category.findAll({
-      include: [{ model: OpenDonation }]
+      include: [{ model: OpenDonation }],
     });
     const categoryResult = {
       statusCode: 200,
       statusText: "Show all categories include patients",
-      data: category
+      data: category,
     };
     res.json(categoryResult);
-
   } catch (err) {
     res.status(500).json({
-    statusText: "Internal Server Error",
-    message: err.message,
+      statusText: "Internal Server Error",
+      message: err.message,
     });
   }
 };
 
 /**
  * Get category by id iclude patient
-*/
+ */
 routes.getCategoryByIdIncludePatient = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findAll({
-      include : [{ model: OpenDonation, include : [Donature]}],
-      where: { id: categoryId }});
-    if(category) {
+      include: [{ model: OpenDonation, include: [Donature] }],
+      where: { id: categoryId },
+    });
+    if (category) {
       const categoryResult = {
         statusCode: 200,
         statusText: "Success",
         message: "Show donation by id categories",
-        data: category
-      }
+        data: category,
+      };
       res.json(categoryResult);
+    } else {
+      res.status(500).json("Data not found");
     }
-    else {
-      res.status(500).json('Data not found')
-    }
-
   } catch (err) {
     console.log(err);
     res.status(500).json({
-    statusText: "Internal Server Error",
-    message: err.message,
+      statusText: "Internal Server Error",
+      message: err.message,
     });
   }
 };
@@ -64,26 +62,25 @@ routes.getCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findAll({
-      include: [{ model:DonationType, include : [{ model: OpenDonation, include : [Donature]}]}],
-      where: { id: categoryId }});
-    if(category) {
+      include: [{ model: DonationType, include: [{ model: OpenDonation, include: [Donature] }] }],
+      where: { id: categoryId },
+    });
+    if (category) {
       const categoryResult = {
         statusCode: 200,
         statusText: "Success",
         message: "Show donation by id categories",
-        data: category
-      }
+        data: category,
+      };
       res.json(categoryResult);
+    } else {
+      res.status(500).json("Data not found");
     }
-    else {
-      res.status(500).json('Data not found')
-    }
-
   } catch (err) {
     console.log(err);
     res.status(500).json({
-    statusText: "Internal Server Error",
-    message: err.message,
+      statusText: "Internal Server Error",
+      message: err.message,
     });
   }
 };
@@ -91,23 +88,22 @@ routes.getCategoryById = async (req, res) => {
 /**
  * Create categories
  */
-routes.createCategory = async(req, res) => {
+routes.createCategory = async (req, res) => {
   try {
     const createCategory = await Category.create({
-        ...req.body
+      ...req.body,
     });
     const categoryResult = {
       statusCode: 200,
       statusText: "Success",
       message: "Category has been create",
-      data: createCategory
+      data: createCategory,
     };
-    res.json(categoryResult)
-
+    res.json(categoryResult);
   } catch (err) {
     res.status(500).json({
-    statusText: "Internal Server Error",
-    message: err.message,
+      statusText: "Internal Server Error",
+      message: err.message,
     });
   }
 };
@@ -117,20 +113,19 @@ routes.createCategory = async(req, res) => {
  */
 routes.editCategory = async (req, res) => {
   try {
-    const categoryId  = req.body.id;
-    const getCategoryDetails = await Category.update(req.body,{
+    const categoryId = req.body.id;
+    const getCategoryDetails = await Category.update(req.body, {
       where: {
-        id: categoryId
+        id: categoryId,
       },
     });
     const categoryResult = {
       statusCode: 200,
       statusText: "Success",
       message: "Category has been Update",
-      data: getCategoryDetails
+      data: getCategoryDetails,
     };
-    res.json(categoryResult)
-
+    res.json(categoryResult);
   } catch (err) {
     res.status(500).json({
       statusText: "Internal Server Error",

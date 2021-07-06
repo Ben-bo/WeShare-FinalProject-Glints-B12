@@ -5,17 +5,14 @@ module.exports = (sequelize, DataTypes) => {
   //DonationType CLASS
   class DonationType extends Model {
     static associate(models) {
-      //associate to Category
-      DonationType.belongsTo(models.Category, {
-        foreignKey: "categoryId"});
-      //associate to OpenDonation
-      DonationType.hasMany(models.OpenDonation, {
+      //associate to OpenDonationDetails
+      DonationType.hasMany(models.OpenDonationDetails, {
         foreignKey: "donationTypeId",
       });
-      //associate to Donature
-      DonationType.hasMany(models.Donature, {
+      //associate to Information
+      DonationType.hasOne(models.Information, {
         foreignKey: "donationTypeId",
-     });
+      });
     }
   }
   DonationType.init(
@@ -26,17 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
       },
-      donationType: {
+      typeName: {
         type: DataTypes.STRING,
       },
-      image: {
+      icon: {
         type: DataTypes.STRING,
-      },
-      //required
-      categoryId: {
-        type: DataTypes.INTEGER,
-        foreignKey: true,
-        allowNull: false,
       },
       //auto
       createdAt: {

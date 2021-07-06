@@ -128,4 +128,26 @@ routes.putUser = async (req, res) => {
   }
 };
 
+routes.getUserById = async (req, res) => {
+  try {
+    const byId = req.params.id;
+    const users = await User.findOne({ where: { id: byId } });
+    if (users) {
+      res.status(200).json({
+        statusText: "Success",
+        message: `Successfully get user with Id : ${byId}`,
+        userDetails: users,
+      });
+    } else {
+      res.status(404).json(`This member with ID: ${byId} not found`);
+    }
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: `Sorry, we failed to find your requested ID`,
+      Error: err,
+    });
+  }
+};
+
 module.exports = routes;

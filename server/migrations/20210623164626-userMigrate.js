@@ -26,23 +26,26 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      profilePicture: {
+      image: {
         type: Sequelize.STRING,
       },
-      cardIdentityId: {
+      NIK: {
         type: Sequelize.BIGINT,
       },
-      bornDate: {
+      bithDate: {
         type: Sequelize.DATEONLY,
       },
       bornPlace: {
         type: Sequelize.STRING,
       },
-      expiredDate: {
+      nikExpired: {
         type: Sequelize.DATEONLY,
       },
-      eKtpConfirmation: {
+      isEktp: {
         type: Sequelize.BOOLEAN,
+      },
+      ktpPicture: {
+        type: Sequelize.STRING,
       },
       //auto
       createdAt: {

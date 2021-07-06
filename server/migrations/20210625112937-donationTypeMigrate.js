@@ -8,17 +8,11 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
       },
-      donationType: {
+      typeName: {
         type: Sequelize.STRING,
       },
-      image: {
+      icon: {
         type: Sequelize.STRING,
-      },
-      //required
-      categoryId: {
-        type: Sequelize.INTEGER,
-        foreignKey: true,
-        allowNull: false,
       },
       //auto
       createdAt: {
