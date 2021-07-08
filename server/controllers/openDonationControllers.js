@@ -29,7 +29,6 @@ donationController.create = async (req, res) => {
         donationTypeId: req.body.donationTypeId,
         userId: req.body.userId,
       };
-      // res.send(data);
       const result = await openDonationModel.create(data);
       console.log(req.body);
       res.status(status).send({
