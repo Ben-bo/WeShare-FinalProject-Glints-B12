@@ -29,7 +29,7 @@ donationController.create = async (req, res) => {
         donationTypeId: req.body.donationTypeId,
         userId: req.body.userId,
       };
-      // res.send(data);
+      const donationType = {};
       const result = await openDonationModel.create(data);
       console.log(req.body);
       res.status(status).send({
@@ -53,7 +53,7 @@ donationController.getAllByUser = async (req, res) => {
     const userId = req.body.userId;
     const dataDonation = await openDonationModel.findAll(
       {
-        include: [{ model: categoryModel }, donationTypeModel],
+        include: [{ model: categoryModel }, { model: donationTypeModel }],
       },
       {
         where: {

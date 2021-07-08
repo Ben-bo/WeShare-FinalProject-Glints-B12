@@ -15,7 +15,6 @@ exports.donationValidate = async (req, res, next) => {
       donationTypeId: req.body.donationTypeId,
       donationNeeded: req.body.donationNeeded,
     };
-    console.log(req.file);
     const schema = Joi.object({
       donationName: Joi.string().required(),
       description: Joi.string().required(),
