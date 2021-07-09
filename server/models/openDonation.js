@@ -13,10 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       OpenDonation.belongsTo(models.User, {
         foreignKey: "userId",
       });
-      //associate to DonationType
-      OpenDonation.belongsTo(models.DonationType, {
-        foreignKey: "donationTypeId",
+      //associate to OpenDonationDetails
+      OpenDonation.hasMany(models.OpenDonationDetails, {
+        foreignKey: "openDonationId",
       });
+      //associate to Donature
       OpenDonation.hasMany(models.Donature, {
         foreignKey: "openDonationId",
       });
@@ -46,19 +47,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       donationNeeded: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+      },
+      isUrgent: {
+        type: DataTypes.BOOLEAN,
       },
       expiredDate: {
         type: DataTypes.DATEONLY,
       },
       //required
       categoryId: {
-        type: DataTypes.INTEGER,
-        foreignKey: true,
-        allowNull: false,
-      },
-      //required
-      donationTypeId: {
         type: DataTypes.INTEGER,
         foreignKey: true,
         allowNull: false,

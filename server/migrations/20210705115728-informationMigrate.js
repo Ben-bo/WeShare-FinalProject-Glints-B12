@@ -1,18 +1,34 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("categories", {
+    await queryInterface.createTable("informations", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
       },
-      categoryName: {
+      amount: {
+        type: Sequelize.INTEGER,
+      },
+      unAmount: {
         type: Sequelize.STRING,
       },
-      icon: {
+      notes: {
         type: Sequelize.STRING,
+      },
+      isAnonymous: {
+        type: Sequelize.BOOLEAN,
+      },
+      donationTypeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        foreignKey: true,
+      },
+      donatureId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
       //auto
       createdAt: {
@@ -29,6 +45,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("categories");
+    await queryInterface.dropTable("informations");
   },
 };
