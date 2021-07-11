@@ -2,7 +2,8 @@ const {
   OpenDonation: openDonationModel,
   Category: categoryModel,
   DonationType: donationTypeModel,
-  Donature: DonatureModel,
+  Donature: donatureModel,
+  OpenDonationDetails: openDonationDetailsModel,
 } = require("../models");
 const { cloudinary } = require("../config/cloudinary");
 // const path = require("path");
@@ -24,18 +25,27 @@ donationController.create = async (req, res) => {
         image: uploadRes.secure_url,
         description: req.body.description,
         donationNeeded: req.body.donationNeeded,
+        isUrgent: req.body.isUrgent,
         expiredDate: req.body.expiredDate,
         categoryId: req.body.categoryId,
-        donationTypeId: req.body.donationTypeId,
         userId: req.body.userId,
       };
-      const donationType = {};
       const result = await openDonationModel.create(data);
-      console.log(req.body);
+      if (result) {
+        let donationTypeId = req.body.donationTypeId;
+        donationTypeId = donationTypeId.trim();
+        donationTypeId = donationTypeId.split(",");
+        for (let i = 0; i < donationTypeId.length; i++) {
+          await openDonationDetailsModel.create({
+            openDonationId: result.dataValues.id,
+            donationTypeId: donationTypeId[i],
+          });
+        }
+      }
+
       res.status(status).send({
         status: status,
         message: message,
-        data: result,
       });
     }
   } catch (error) {

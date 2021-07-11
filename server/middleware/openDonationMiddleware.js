@@ -19,7 +19,7 @@ exports.donationValidate = async (req, res, next) => {
       donationName: Joi.string().required(),
       description: Joi.string().required(),
       categoryId: Joi.number().required(),
-      donationTypeId: Joi.number().required(),
+      donationTypeId: Joi.string().required(),
       donationNeeded: Joi.string().required(),
     }).options({ abortEarly: false });
     const validate = await schema.validate(body);
