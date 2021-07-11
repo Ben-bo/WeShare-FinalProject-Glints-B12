@@ -1,7 +1,7 @@
 const { Category, DonationType, OpenDonation, Donature, OpenDonationDetails, Information } = require("../models");
 
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 const routes = {};
 
@@ -11,7 +11,7 @@ const routes = {};
 routes.getAllCategoryIncludePatient = async (req, res) => {
   try {
     const category = await Category.findAll({
-      include: [{ model: OpenDonation, include: [{model:OpenDonationDetails,include: [DonationType]}]}],
+      include: [{ model: OpenDonation, include: [{ model: OpenDonationDetails, include: [DonationType] }] }],
     });
     const categoryResult = {
       statusCode: 200,
@@ -33,8 +33,8 @@ routes.getAllCategoryIncludePatient = async (req, res) => {
 routes.getAllDonationUrgent = async (req, res) => {
   try {
     const donation = await OpenDonation.findAll({
-      include: [{model:OpenDonationDetails,include: [DonationType]}],
-      where: { isUrgent: {[Op.not]: false} },
+      include: [{ model: OpenDonationDetails, include: [DonationType] }],
+      where: { isUrgent: { [Op.not]: false } },
     });
     const donationResult = {
       statusCode: 200,
@@ -56,8 +56,8 @@ routes.getAllDonationUrgent = async (req, res) => {
 routes.getAllNewestDonation = async (req, res) => {
   try {
     const donation = await OpenDonation.findAll({
-      include: [{model:OpenDonationDetails,include: [DonationType]}],
-      order: [["createdAt", "DESC"]]
+      include: [{ model: OpenDonationDetails, include: [DonationType] }],
+      order: [["createdAt", "DESC"]],
     });
     const donationResult = {
       statusCode: 200,
@@ -81,11 +81,11 @@ routes.getCategoryByIdIncludePatient = async (req, res) => {
     const { categoryId = [] } = req.body;
     const category = await Category.findAll({
       // include: [{ model: OpenDonation,include:[{model:Donature, include :[Information]}],include : [{model: DonationType}]}],
-      include: [{ model: OpenDonation,include:[{model : DonationType}]}],
-    
-     where: { id: { [Op.in]: categoryId } }
+      include: [{ model: OpenDonation, include: [{ model: DonationType }] }],
+
+      where: { id: { [Op.in]: categoryId } },
     });
-    
+
     if (category) {
       const categoryResult = {
         statusCode: 200,
@@ -113,7 +113,7 @@ routes.getCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findAll({
-      include: [{ model: OpenDonation, include: [{model:OpenDonationDetails,include: [DonationType]}]}],
+      include: [{ model: OpenDonation, include: [{ model: OpenDonationDetails, include: [DonationType] }] }],
       where: { id: categoryId },
     });
     if (category) {

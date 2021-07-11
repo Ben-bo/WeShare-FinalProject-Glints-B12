@@ -1,9 +1,4 @@
-const {
-  OpenDonation: openDonationModel,
-  Category: categoryModel,
-  DonationType: donationTypeModel,
-  Donature: DonatureModel,
-} = require("../models");
+const { OpenDonation: openDonationModel, Category: categoryModel, DonationType: donationTypeModel, Donature: DonatureModel, Information: InformationModel, User: userModel } = require("../models");
 const { cloudinary } = require("../config/cloudinary");
 // const path = require("path");
 const donationController = {};
@@ -80,8 +75,14 @@ donationController.getAllById = async (req, res) => {
     let status = 200;
     let message = "OK";
     const openDonationId = req.params.id;
+    // const dataDonation = await openDonationModel.findOne({
+    //   include: [{ model: categoryModel }, donationTypeModel],
+    //   where: { id: openDonationId },
+    // });
+
+    //repair by Budi Hartono
     const dataDonation = await openDonationModel.findOne({
-      include: [{ model: categoryModel }, donationTypeModel],
+      include: [categoryModel, { model: donationTypeModel, include: [InformationModel] }, { model: DonatureModel, include: [userModel, InformationModel] }],
       where: { id: openDonationId },
     });
     res.status(status).send({
@@ -170,10 +171,7 @@ donationController.update = async (req, res) => {
       where: { id: openDonationId },
     });
     if (userId === dataOpenDonationById.userId) {
-      const update = await openDonationModel.update(
-        { ...req.body },
-        { where: { id: openDonationId } }
-      );
+      const update = await openDonationModel.update({ ...req.body }, { where: { id: openDonationId } });
       const dataOpenDonation = await openDonationModel.findAll({
         where: { id: openDonationId },
       });
