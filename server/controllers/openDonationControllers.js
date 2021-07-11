@@ -4,6 +4,7 @@ const {
   DonationType: donationTypeModel,
   Donature: donatureModel,
   OpenDonationDetails: openDonationDetailsModel,
+  Information: informationModel,
 } = require("../models");
 const { cloudinary } = require("../config/cloudinary");
 // const path = require("path");
@@ -63,7 +64,14 @@ donationController.getAllByUser = async (req, res) => {
     const userId = req.body.userId;
     const dataDonation = await openDonationModel.findAll(
       {
-        include: [{ model: categoryModel }, { model: donationTypeModel }],
+        include: [
+          { model: categoryModel },
+          {
+            model: openDonationDetailsModel,
+            attributes: ["id"],
+            include: [donationTypeModel],
+          },
+        ],
       },
       {
         where: {
@@ -91,7 +99,19 @@ donationController.getAllById = async (req, res) => {
     let message = "OK";
     const openDonationId = req.params.id;
     const dataDonation = await openDonationModel.findOne({
-      include: [{ model: categoryModel }, donationTypeModel],
+      include: [
+        { model: categoryModel },
+        {
+          model: openDonationDetailsModel,
+          attributes: ["id"],
+          include: [donationTypeModel],
+        },
+        {
+          model: donatureModel,
+          attributes: ["id"],
+          include: [{ model: informationModel, include: [donationTypeModel] }],
+        },
+      ],
       where: { id: openDonationId },
     });
     res.status(status).send({
@@ -113,7 +133,14 @@ donationController.getAll = async (req, res) => {
     let status = 200;
     let message = "OK";
     const dataDonation = await openDonationModel.findAll({
-      include: [{ model: categoryModel }, donationTypeModel],
+      include: [
+        { model: categoryModel },
+        {
+          model: openDonationDetailsModel,
+          attributes: ["id"],
+          include: [donationTypeModel],
+        },
+      ],
     });
     res.status(status).send({
       status: status,
