@@ -26,14 +26,7 @@ const donationTypeRoutes = require("./routes/donationTypeRoutes");
 const donatureRoutes = require("./routes/donatureRoutes");
 const openDonation = require("./routes/openDonationRoutes");
 
-app.use(
-  "/api/weShare",
-  userRoutes,
-  categoryRoutes,
-  donationTypeRoutes,
-  donatureRoutes,
-  openDonation
-);
+app.use("/api/weShare", userRoutes, categoryRoutes, donationTypeRoutes, donatureRoutes, openDonation);
 
 app.get("/", (req, res) => {
   res.send({
@@ -51,7 +44,5 @@ app.all("*", (req, res) =>
 );
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log(
-    `SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`
-  );
+  console.log(`SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`);
 });

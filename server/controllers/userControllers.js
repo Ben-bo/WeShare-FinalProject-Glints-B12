@@ -1,6 +1,10 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const log = console.log;
+
 const routes = {};
 
 //===============================REGISTER====================================
@@ -12,7 +16,7 @@ routes.register = async (req, res) => {
   try {
     const findEmail = await User.findOne({ where: { email: userEmail } });
     if (findEmail) {
-      res.status(208).json({
+      return res.status(208).json({
         statusText: "Already Reported",
         messsage: "Email already exist on server, please login!",
       });
@@ -28,6 +32,52 @@ routes.register = async (req, res) => {
         password: bcrypt.hashSync(reqBoPass, 10),
         confirmPassword: bcrypt.hashSync(reqBoPass, 10),
       });
+
+      //mailSections
+      const output = `
+    <p>You have a new account request</p>
+    <h3>Account Details</h3>
+    <ul>  
+      <li>Email: ${userEmail}</li>
+      <li>Password: ${reqBoPass}</li>
+    </ul>
+
+    <b><p>Best Regards,</p>
+    <p>WeShare Team</p></b>
+    <br>
+
+    <p>You received this email because you are request a new account in WeShare App.</p>
+    <p>Indonesia,</p>
+    <p>Copyright@WeShare2021</p>
+   <br>
+
+    <b><p>this is an automated email, please don't reply to this email!</p></b>`;
+      // transporter
+      let transporter = await nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.MAIL || "teamweshare22@gmail.com", // TODO: your gmail account
+          pass: process.env.PASSWORD || "Weshare99", // TODO: your gmail password
+        },
+      });
+
+      // mailOption
+      let mailOptions = {
+        from: "teamweshare22@gmail.com", // TODO: email sender
+        to: userEmail, // TODO: email receiver
+        subject: "WeShare Team - Registration Completed!",
+        text: `Welcome to WeShare ${userEmail}, this is your terms details for Login!`,
+        html: output,
+      };
+
+      //Confirm sendMail
+      transporter.sendMail(mailOptions, (err, data) => {
+        if (err) {
+          return log("Error sending email notification....!");
+        }
+        log(`Email has been send Successfully to : ${userEmail}`);
+      });
+
       req.user = encryptUserPass;
       const userResult = {
         statusCode: 200,
