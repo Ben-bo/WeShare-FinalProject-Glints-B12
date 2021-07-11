@@ -5,8 +5,8 @@ const donationController = require("../controllers/openDonationControllers");
 const uploadImg = require("../controllers/multer");
 router.post(
   "/openDonation/create",
-  tokenVerify.tokenVerify,
   uploadImg.single("image"),
+  tokenVerify.tokenVerify,
   openDonationMiddleware.donationValidate,
   donationController.create
 );

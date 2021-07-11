@@ -7,12 +7,16 @@ const {
     getCategoryById, 
     createCategory, 
     editCategory,
-    getCategoryByIdIncludePatient
+    getCategoryByIdIncludePatient,
+    getAllDonationUrgent,
+    getAllNewestDonation
 } = require("../controllers/categoryControllers");
 
 router.get("/category", getAllCategoryIncludePatient);
 router.get("/category/details/:id", getCategoryById);
-router.get("/category/:id", getCategoryByIdIncludePatient);
+router.get("/category/donation", getCategoryByIdIncludePatient);
+router.get("/category/urgent",getAllDonationUrgent);
+router.get("/category/newest", getAllNewestDonation);
 router.post("/category", createCategory);
 router.put("/category", editCategory);
 

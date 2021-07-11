@@ -53,7 +53,7 @@ donationController.getAllByUser = async (req, res) => {
     const userId = req.body.userId;
     const dataDonation = await openDonationModel.findAll(
       {
-        include: [{ model: categoryModel }, { model: donationTypeModel }],
+        include: [{ model: categoryModel }, donationTypeModel],
       },
       {
         where: {

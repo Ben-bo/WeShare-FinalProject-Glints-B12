@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   //DonationType CLASS
   class DonationType extends Model {
     static associate(models) {
-      //associate to OpenDonationDetails
-      DonationType.hasMany(models.OpenDonationDetails, {
+      DonationType.belongsToMany(models.OpenDonation, {
+        through: models.OpenDonationDetails,
         foreignKey: "donationTypeId",
       });
       //associate to Information

@@ -18,8 +18,6 @@ app.use(
     origin: "*",
   })
 );
-const donationRoute = require("./routes/openDonationRoutes");
-app.use(donationRoute);
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const donationTypeRoutes = require("./routes/donationTypeRoutes");

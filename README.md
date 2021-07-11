@@ -24,7 +24,7 @@
 | DELETE | /api/weShare/OpenDonation/delete/:idOpenDonation | delete Open Donation                         |
 | GET    | /api/weShare/OpenDonation/my                     | Get openDonation by id user                  |     |
 
-# Last Update on (29 Juny 2021 | 23:18 WIB)
+# Last Update on (5 July 2021 | 21:22 WIB)
 
 # -----------------------------------------
 
