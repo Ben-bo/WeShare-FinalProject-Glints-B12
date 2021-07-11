@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 app.all("*", (req, res) =>
   res.status(404).json({
     statusText: "Not Found",
-    message: "Route does't exist, please check youre Route again.",
+    message: "Route doesn't exist, please check youre Route again.",
   })
 );
 

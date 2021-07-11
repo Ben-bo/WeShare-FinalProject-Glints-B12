@@ -7,6 +7,7 @@
 | POST   | /api/weShare/user/register                       | Register user                                |
 | POST   | /api/weShare/user/login                          | login user to get token for authentication   |
 | GET    | /api/weShare/user/:id                            | API get User by/:id                          |
+| PUT    | /api/weShare/user/forgetPassword                 | API for changed Password                     |
 | PUT    | /api/weShare/user/editProfile/:id                | API for edit user profile ( by /:id)         |
 | GET    | /api/weShare/allCategory                         | API for get all category include patient     |
 | GET    | /api/weShare/category/:id                        | API for get by id category include patient   |

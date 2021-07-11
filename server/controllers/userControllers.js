@@ -35,7 +35,7 @@ routes.register = async (req, res) => {
 
       //mailSections
       const output = `
-    <p>You have a new account request</p>
+    <p>Hello ${userEmail} Welcome to <a href="#">WeShare Family.</a>, You have a new account request</p>
     <h3>Account Details</h3>
     <ul>  
       <li>Email: ${userEmail}</li>
@@ -105,7 +105,8 @@ routes.login = async (req, res, next) => {
     //getting email from body and compare with email on database
     const { email } = req.body;
     const user = await User.findOne({ where: { email: email } });
-
+    const userEmail = req.body.email;
+    const newDate = new Date();
     //if email doesn't exist
     if (!user) {
       return res.status(404).json({
@@ -123,6 +124,51 @@ routes.login = async (req, res, next) => {
       });
     }
     //proceed to GET TOKEN LOGIN
+
+    //mailSections
+    const output = `
+    <p>Hello ${userEmail}, We Noticed a New Login</p>
+    <h3>Login Details</h3>
+    <ul>  
+      <li>Email: ${userEmail}</li>
+      <li>Date: ${newDate}</li>
+      
+    </ul>
+
+    <p>If this was you, you can safely disregard this email. If this wasn't you, you can <a href="#">changed your password here.</a></p>
+   <br>
+
+    <b><p>Best Regards,</p>
+    <p>WeShare Team</p></b>
+    <br>
+
+    <b><p>this is an automated email, please don't reply to this email!</p></b>`;
+    // transporter
+    let transporter = await nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.MAIL || "teamweshare22@gmail.com", // TODO: your gmail account
+        pass: process.env.PASSWORD || "Weshare99", // TODO: your gmail password
+      },
+    });
+
+    // mailOption
+    let mailOptions = {
+      from: "teamweshare22@gmail.com", // TODO: email sender
+      to: userEmail, // TODO: email receiver
+      subject: "WeShare Team - New Login Detected!",
+      text: `Welcome to WeShare ${userEmail}, New Login detected!`,
+      html: output,
+    };
+
+    //Confirm sendMail
+    transporter.sendMail(mailOptions, (err, data) => {
+      if (err) {
+        return log("Error sending email notification....!");
+      }
+      log(`Email has been send Successfully to : ${userEmail}`);
+    });
+
     next();
 
     //if login Error
@@ -178,6 +224,98 @@ routes.putUser = async (req, res) => {
   }
 };
 
+//============================Forgot Password=======================================
+routes.forgetPassword = async (req, res) => {
+  try {
+    const reqBoPass = req.body.password;
+    // const idParPut = req.params.id;
+    const userEmail = req.body.email;
+    const confirmPass = req.body.confirmPassword;
+    const newDate = new Date();
+
+    const findUser = await User.findOne({ where: { email: userEmail } });
+
+    if (reqBoPass !== confirmPass || confirmPass == null) {
+      return res.status(409).json({
+        statusText: "Conflict",
+        messsage: "Password didn't match, please try again!",
+      });
+    } else {
+      if (findUser) {
+        await User.update(
+          { password: bcrypt.hashSync(reqBoPass, 10), confirmPassword: bcrypt.hashSync(reqBoPass, 10) },
+          {
+            where: {
+              email: userEmail,
+            },
+          }
+        );
+        //mailSections
+        const output = `
+      <p>Hello, ${userEmail}</p>
+      <p>The password for your WeShare account on <a href="#">https://WeShare.com</a> has successfully been changed.</p>
+      <h3>Account Details</h3>
+      <ul>  
+        <li>Email: ${userEmail}</li>
+        <li>Password: ${reqBoPass}</li>
+      </ul>
+      <h3>Password has been changed on</h3>
+      <ul>
+        <li>Date : ${newDate} </li>
+      </ul>
+      <br>
+      <p>If you did not initiate this change, please contact your administrator immediately.<p>
+      <b><p>Best Regards,</p>
+      <p>WeShare Team</p></b>
+      <br>
+  
+      <b><p>this is an automated email, please don't reply to this email!</p></b>`;
+        // transporter
+        let transporter = await nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: process.env.MAIL || "teamweshare22@gmail.com", // TODO: your gmail account
+            pass: process.env.PASSWORD || "Weshare99", // TODO: your gmail password
+          },
+        });
+
+        // mailOption
+        let mailOptions = {
+          from: "teamweshare22@gmail.com", // TODO: email sender
+          to: userEmail, // TODO: email receiver
+          subject: "WeShare Team - Changed Password Request!",
+          text: `Welcome to WeShare ${userEmail}, Changed Password Request!`,
+          html: output,
+        };
+
+        //Confirm sendMail
+        transporter.sendMail(mailOptions, (err, data) => {
+          if (err) {
+            return log("Error sending email notification....!");
+          }
+          log(`Email has been send Successfully to : ${userEmail}`);
+        });
+        res.status(200).json({
+          statusText: "Updated",
+          message: `Password User with Email: ${userEmail} has been Changed Successfully!`,
+        });
+      } else {
+        return res.status(404).json({
+          statusText: "Not Found",
+          message: `User with email : ${userEmail} not found.`,
+        });
+      }
+    }
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: `Sorry, we failed to changed your password`,
+      Error: err.message,
+    });
+  }
+};
+
+//===============================Get User By Id======================================
 routes.getUserById = async (req, res) => {
   try {
     const byId = req.params.id;
