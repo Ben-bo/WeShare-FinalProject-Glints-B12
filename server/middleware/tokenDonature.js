@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
+
 exports.tokenVerify = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
@@ -14,7 +15,7 @@ exports.tokenVerify = async (req, res, next) => {
       });
     }
     const dataUser = jwt.verify(token, process.env.SECRET_KEY);
-    req.user = dataUser.id;
+    req.user = dataUser.userId;
     next();
   } catch (error) {
     console.log(error);

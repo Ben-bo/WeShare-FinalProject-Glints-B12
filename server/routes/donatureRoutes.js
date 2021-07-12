@@ -9,13 +9,14 @@ const {
 } = require("../controllers/donatureControllers");
 
 const { tokenVerify } = require("../middleware/tokenDonature");
-const { donationValidate } = require("../middleware/donatureMiddleware");
+const { donatureValidate } = require("../middleware/donatureMiddleware");
 
 //========================================Donature==============================
+
 router.get("/myDonation", getMyDonation);
 router.get("/allDonature", getAllDonature);
 router.get("/donatureById/:id", getDonatureById);
-router.post("/createDonature", tokenVerify, createDonature);
+router.post("/createDonature", tokenVerify, donatureValidate, createDonature);
 
 //========================================Export Router===============================
 module.exports = router;

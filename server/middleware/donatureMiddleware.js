@@ -1,23 +1,24 @@
 const Joi = require("joi");
-exports.donationValidate = async (req, res, next) => {
+exports.donatureValidate = async (req, res, next) => {
   try {
     const schema = Joi.object({
-      fullName: Joi.string().required(),
-      quantity: Joi.string().required(),
-      comment: Joi.string(),
+      amount: Joi.number().required(),
+      unAmount: Joi.string().valid(null, ""),
+      notes: Joi.string(),
+      isAnonymous: Joi.boolean().required(),
       donationTypeId: Joi.number().required(),
-      openDonationId: Joi.number().required(),
-      userId: Joi.number().required(),
+      donatureId: Joi.number().valid(null, ""),
     }).options({ abortEarly: false });
+
     const body = {
-      fullName: req.body.fullName,
-      quantity: req.body.quantity,
-      comment: req.body.comment,
+      amount: req.body.amount,
+      unAmount: req.body.unAmount,
+      notes: req.body.notes,
+      isAnonymous: req.body.isAnonymous,
       donationTypeId: req.body.donationTypeId,
-      openDonationId: req.body.openDonationId,
-      userId: req.user,
     };
     const validate = await schema.validate(body);
+
     if (validate.error) {
       res.status(400).json({
         statusText: "Bad Request",
