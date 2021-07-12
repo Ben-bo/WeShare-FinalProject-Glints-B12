@@ -12,8 +12,9 @@ router.post(
 );
 router.put(
   "/openDonation/update/:openDonationId",
+  uploadImg.single("image"),
   tokenVerify.tokenVerify,
-  openDonationMiddleware.donationValidate,
+  openDonationMiddleware.donationValidateUpdate,
   donationController.update
 );
 router.get(

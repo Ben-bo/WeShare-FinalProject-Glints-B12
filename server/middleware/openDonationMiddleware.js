@@ -39,3 +39,40 @@ exports.donationValidate = async (req, res, next) => {
     });
   }
 };
+exports.donationValidateUpdate = async (req, res, next) => {
+  try {
+    const img = req.file;
+    if (!img) {
+      req.img = "img kosong";
+    }
+    const body = {
+      donationName: req.body.donationName,
+      description: req.body.description,
+      categoryId: req.body.categoryId,
+      donationTypeId: req.body.donationTypeId,
+      donationNeeded: req.body.donationNeeded,
+    };
+    const schema = Joi.object({
+      donationName: Joi.string().required(),
+      description: Joi.string().required(),
+      categoryId: Joi.number().required(),
+      donationTypeId: Joi.string().required(),
+      donationNeeded: Joi.string().required(),
+    }).options({ abortEarly: false });
+    const validate = await schema.validate(body);
+
+    if (validate.error) {
+      req.error = validate.error.message;
+      next();
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: 500,
+      message: "validation failed",
+      data: error,
+    });
+  }
+};

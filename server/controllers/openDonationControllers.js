@@ -25,6 +25,7 @@ donationController.create = async (req, res) => {
         donationName: req.body.donationName,
         image: uploadRes.secure_url,
         description: req.body.description,
+        cloudinaryId: uploadRes.public_id,
         donationNeeded: req.body.donationNeeded,
         isUrgent: req.body.isUrgent,
         expiredDate: req.body.expiredDate,
@@ -140,6 +141,11 @@ donationController.getAll = async (req, res) => {
           attributes: ["id"],
           include: [donationTypeModel],
         },
+        {
+          model: donatureModel,
+          attributes: ["id"],
+          include: [{ model: informationModel, include: [donationTypeModel] }],
+        },
       ],
     });
     res.status(status).send({
@@ -171,6 +177,9 @@ donationController.delete = async (req, res) => {
           id: openDonationId,
         },
       });
+      if (dataDonation) {
+        await cloudinary.uploader.destroy(dataOpenDonationById.cloudinaryId);
+      }
       const dataOpenDonation = await openDonationModel.findAll({
         where: { id: openDonationId },
       });
@@ -199,34 +208,151 @@ donationController.delete = async (req, res) => {
 };
 donationController.update = async (req, res) => {
   try {
-    let status = 200;
-    let message = "OK";
-    const openDonationId = req.params.openDonationId;
-    const userId = req.body.userId;
-    const dataOpenDonationById = await openDonationModel.findOne({
-      where: { id: openDonationId },
-    });
-    if (userId === dataOpenDonationById.userId) {
-      const update = await openDonationModel.update(
-        { ...req.body },
-        { where: { id: openDonationId } }
-      );
-      const dataOpenDonation = await openDonationModel.findAll({
-        where: { id: openDonationId },
-      });
-      res.status(status).send({
-        status,
-        message,
-        totalRowChanged: update,
-        data: dataOpenDonation,
-      });
+    const errorCek = req.error;
+    if (errorCek) {
+      res.status(500).send({ status: 500, message: errorCek });
     } else {
-      status = 500;
-      message = "failed Update, you are not the owner of this data";
-      res.status(status).send({
-        status: status,
-        message: message,
-      });
+      const pesanImg = req.img;
+      if (!pesanImg) {
+        const fileStr = req.file.path;
+        const uploadRes = await cloudinary.uploader.upload(fileStr, {
+          upload_preset: "dev_setup",
+        });
+        let status = 200;
+        let message = "OK";
+        const openDonationId = req.params.openDonationId;
+        const userId = req.body.userId;
+        console.log(userId);
+        const data = {
+          donationName: req.body.donationName,
+          image: uploadRes.secure_url,
+          description: req.body.description,
+          cloudinaryId: uploadRes.public_id,
+          donationNeeded: req.body.donationNeeded,
+          isUrgent: req.body.isUrgent,
+          expiredDate: req.body.expiredDate,
+          categoryId: req.body.categoryId,
+          userId: userId,
+        };
+        const dataOpenDonationById = await openDonationModel.findOne({
+          where: { id: openDonationId },
+        });
+        console.log(dataOpenDonationById);
+        if (userId === dataOpenDonationById.userId) {
+          await cloudinary.uploader.destroy(dataOpenDonationById.cloudinaryId);
+          const update = await openDonationModel.update(data, {
+            where: { id: openDonationId },
+          });
+          const delType = await openDonationDetailsModel.destroy({
+            where: { openDonationId },
+          });
+          if (delType) {
+            let donationTypeId = req.body.donationTypeId;
+            donationTypeId = donationTypeId.trim();
+            donationTypeId = donationTypeId.split(",");
+            for (let i = 0; i < donationTypeId.length; i++) {
+              await openDonationDetailsModel.create({
+                openDonationId,
+                donationTypeId: donationTypeId[i],
+              });
+            }
+          }
+          const dataOpenDonation = await openDonationModel.findOne(
+            {
+              include: [
+                { model: categoryModel },
+                {
+                  model: openDonationDetailsModel,
+                  attributes: ["id"],
+                  include: [donationTypeModel],
+                },
+              ],
+            },
+            {
+              where: { id: openDonationId },
+            }
+          );
+          res.status(status).send({
+            status,
+            message,
+            totalRowChanged: update,
+            data: dataOpenDonation,
+          });
+        } else {
+          status = 500;
+          message = "failed Update, you are not the owner of this data";
+          res.status(status).send({
+            status: status,
+            message: message,
+          });
+        }
+      } else {
+        let status = 200;
+        let message = "OK";
+        const openDonationId = req.params.openDonationId;
+        const userId = req.body.userId;
+        console.log(userId);
+        const data = {
+          donationName: req.body.donationName,
+          description: req.body.description,
+          donationNeeded: req.body.donationNeeded,
+          isUrgent: req.body.isUrgent,
+          expiredDate: req.body.expiredDate,
+          categoryId: req.body.categoryId,
+          userId: userId,
+        };
+        const dataOpenDonationById = await openDonationModel.findOne({
+          where: { id: openDonationId },
+        });
+        console.log(dataOpenDonationById);
+        if (userId === dataOpenDonationById.userId) {
+          const update = await openDonationModel.update(data, {
+            where: { id: openDonationId },
+          });
+          const delType = await openDonationDetailsModel.destroy({
+            where: { openDonationId },
+          });
+          if (delType) {
+            let donationTypeId = req.body.donationTypeId;
+            donationTypeId = donationTypeId.trim();
+            donationTypeId = donationTypeId.split(",");
+            for (let i = 0; i < donationTypeId.length; i++) {
+              await openDonationDetailsModel.create({
+                openDonationId,
+                donationTypeId: donationTypeId[i],
+              });
+            }
+          }
+          const dataOpenDonation = await openDonationModel.findOne(
+            {
+              include: [
+                { model: categoryModel },
+                {
+                  model: openDonationDetailsModel,
+                  attributes: ["id"],
+                  include: [donationTypeModel],
+                },
+              ],
+            },
+            {
+              where: { id: openDonationId },
+            }
+          );
+          res.status(status).send({
+            status,
+            message,
+            totalRowChanged: update,
+            data: dataOpenDonation,
+          });
+        } else {
+          status = 500;
+          message = "failed Update, you are not the owner of this data";
+          res.status(status).send({
+            status: status,
+            message: message,
+          });
+        }
+      }
     }
   } catch (error) {
     console.log(error);
