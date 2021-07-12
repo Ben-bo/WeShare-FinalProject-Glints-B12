@@ -23,6 +23,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      cloudinaryId: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       donationNeeded: {
         type: Sequelize.INTEGER,
       },
