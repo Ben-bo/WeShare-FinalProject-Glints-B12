@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const uploadImg = require("../controllers/multer");
 exports.donationValidate = async (req, res, next) => {
   try {
     const img = req.file;
@@ -75,4 +76,17 @@ exports.donationValidateUpdate = async (req, res, next) => {
       data: error,
     });
   }
+};
+exports.uploadImg = async (req, res, next) => {
+  let upload = uploadImg.single("image");
+  upload(req, res, function (err) {
+    if (err) {
+      res.status(500).send({
+        statusText: "Bad Request",
+        error: err.message,
+        suggestion: "Min file size is 500kb",
+      });
+    }
+    next();
+  });
 };

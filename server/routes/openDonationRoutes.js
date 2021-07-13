@@ -2,17 +2,16 @@ const router = require("express").Router();
 const openDonationMiddleware = require("../middleware/openDonationMiddleware");
 const tokenVerify = require("../middleware/tokenOpenDonation");
 const donationController = require("../controllers/openDonationControllers");
-const uploadImg = require("../controllers/multer");
 router.post(
   "/openDonation/create",
-  uploadImg.single("image"),
+  openDonationMiddleware.uploadImg,
   tokenVerify.tokenVerify,
   openDonationMiddleware.donationValidate,
   donationController.create
 );
 router.put(
   "/openDonation/update/:openDonationId",
-  uploadImg.single("image"),
+  openDonationMiddleware.uploadImg,
   tokenVerify.tokenVerify,
   openDonationMiddleware.donationValidateUpdate,
   donationController.update
