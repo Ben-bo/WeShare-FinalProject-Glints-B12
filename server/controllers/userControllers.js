@@ -1,6 +1,6 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
-
+const cloudinary = require("../config/cloudinary");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const log = console.log;

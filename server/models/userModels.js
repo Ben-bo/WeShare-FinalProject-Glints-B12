@@ -62,6 +62,9 @@ module.exports = (sequelize, DataTypes) => {
       ktpPicture: {
         type: DataTypes.STRING,
       },
+      cloudinaryId: {
+        type: DataTypes.STRING,
+      },
       //auto
       createdAt: {
         type: DataTypes.DATE,
