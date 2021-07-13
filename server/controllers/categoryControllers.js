@@ -11,7 +11,7 @@ const routes = {};
 routes.getAllCategoryIncludeDonation = async (req, res) => {
   try {
     const category = await Category.findAll({
-      include: [{ model: OpenDonation, include : [{model: OpenDonationDetails, DonationType}]}]
+      include: [{ model: OpenDonation, include:{model: DonationType, include : Information}}]
     });
     const categoryResult = {
       statusCode: 200,
@@ -34,7 +34,14 @@ routes.getAllDonationUrgent = async (req, res) => {
   try {
     const donation = await OpenDonation.findAll({
     where: { isUrgent: { [Op.not]: false} },
-    include : [{model: DonationType,  model: Information}], include: [Donature]
+    include: [{
+      model: Category, 
+    },{
+      model: OpenDonationDetails,
+          include: [{ 
+            model: DonationType, include : [Information],
+          }],
+    }],
     });
     const donationResult = {
       statusCode: 200,
@@ -57,7 +64,14 @@ routes.getDonationByTitle = async (req, res) => {
   try {
     let description = req.query.description;
     const donation = await OpenDonation.findAll({
-      include : [{model: DonationType, include:[{model: Information, include: [Donature]}]}],
+      include: [{
+        model: Category, 
+      },{
+        model: OpenDonationDetails,
+            include: [{ 
+              model: DonationType, include : [Information],
+            }],
+      }],
       where: { description: { [Op.iLike]: '%' + description + '%'}}
     });
     const donationResult = {
@@ -80,7 +94,14 @@ routes.getDonationByTitle = async (req, res) => {
 routes.getAllNewestDonation = async (req, res) => {
   try {
     const donation = await OpenDonation.findAll({
-      include : [{model: DonationType, include:[{model: Information, include: [Donature]}]}],
+      include: [{
+        model: Category, 
+      },{
+        model: OpenDonationDetails,
+            include: [{ 
+              model: DonationType, include : [Information],
+            }],
+      }],
       order: [["createdAt", "DESC"]]
     });
     const donationResult = {
