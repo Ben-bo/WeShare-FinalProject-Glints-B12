@@ -1,7 +1,7 @@
 const { Category, DonationType, OpenDonation, Donature, OpenDonationDetails, Information } = require("../models");
 
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 const routes = {};
 
@@ -103,7 +103,6 @@ routes.getAllNewestDonation = async (req, res) => {
 routes.getCategoryIdAndDonationTypeId = async (req, res) => {
   try {
     const { categoryId = [], typeId = [] } = req.body;
-
     const category = await OpenDonation.findAll({
       where: { categoryId: { [Op.in]: categoryId } }, 
       include: [{
@@ -115,26 +114,21 @@ routes.getCategoryIdAndDonationTypeId = async (req, res) => {
       },{
         model: OpenDonationDetails.scope(null),
             include: [{ 
-              model: DonationType,
+              model: DonationType, include : [Information],
               where: { id: { [Op.in]: typeId } }, 
-              attributes: ['typeName'],
+              attributes: ['typeName', 'icon'],
               required: false
             }],
         required: false,
-      },{ 
-        model: Donature, 
-        include: [{
-          model: Information
-        }]
       }]
     });
-      const categoryResult = {
-        statusCode: 200,
-        statusText: "Success",
-        message: "Show donation by id categories and id donationType",
-        data: category,
-      };
-      res.json(categoryResult);
+    const categoryResult = {
+      statusCode: 200,
+      statusText: "Success",
+      message: "Show donation by id categories and id donationType",
+      data: category,
+    };
+    res.json(categoryResult);
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -151,10 +145,7 @@ routes.getCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findOne({
-      include: [{ model: OpenDonation, include:
-        {
-          model: OpenDonationDetails
-        }}],
+      include: [{ model: OpenDonation, include:{model: DonationType, include : Information}}],
       where: { id: categoryId },
     });
     if (category) {

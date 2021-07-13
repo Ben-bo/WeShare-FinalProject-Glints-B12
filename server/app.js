@@ -24,14 +24,7 @@ const donationTypeRoutes = require("./routes/donationTypeRoutes");
 const donatureRoutes = require("./routes/donatureRoutes");
 const openDonation = require("./routes/openDonationRoutes");
 
-app.use(
-  "/api/weShare",
-  userRoutes,
-  categoryRoutes,
-  donationTypeRoutes,
-  donatureRoutes,
-  openDonation
-);
+app.use("/api/weShare", userRoutes, categoryRoutes, donationTypeRoutes, donatureRoutes, openDonation);
 
 app.get("/", (req, res) => {
   res.send({
@@ -44,12 +37,10 @@ app.get("/", (req, res) => {
 app.all("*", (req, res) =>
   res.status(404).json({
     statusText: "Not Found",
-    message: "Route does't exist, please check youre Route again.",
+    message: "Route doesn't exist, please check youre Route again.",
   })
 );
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log(
-    `SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`
-  );
+  console.log(`SERVER IS RUNNING ON PORT 8080 || ENV PORT : ${process.env.PORT}`);
 });

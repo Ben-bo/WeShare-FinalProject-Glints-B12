@@ -11,8 +11,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "openDonationId", targetKey: "id"
       });
       //associate to DonationType
-      OpenDonationDetails.hasOne(models.DonationType, {
-        foreignKey: "id", sourceKey: "donationTypeId"
+      // OpenDonationDetails.hasOne(models.DonationType, {
+      //   foreignKey: "id", sourceKey: "donationTypeId"
+      // });
+      OpenDonationDetails.belongsTo(models.DonationType, {
+        foreignKey: "donationTypeId", sourceKey: "id"
       });
     }
   }
@@ -55,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         includeType: {
           include: [{ 
             model: DonationType, 
-            attributes: ['typeName'],
+            attributes: ['typeName', 'icon'],
             required: false
           }]
         }
