@@ -32,7 +32,7 @@ module.exports = {
       NIK: {
         type: Sequelize.BIGINT,
       },
-      bithDate: {
+      birthDate: {
         type: Sequelize.DATEONLY,
       },
       bornPlace: {

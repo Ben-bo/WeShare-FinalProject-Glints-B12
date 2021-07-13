@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       NIK: {
         type: DataTypes.BIGINT,
       },
-      bithDate: {
+      birthDate: {
         type: DataTypes.DATEONLY,
       },
       bornPlace: {
