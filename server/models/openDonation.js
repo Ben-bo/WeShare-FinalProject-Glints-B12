@@ -18,10 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "openDonationId",
       });
       OpenDonation.belongsToMany(models.DonationType, {
-        through : models.OpenDonationDetails,
+        through: models.OpenDonationDetails,
         foreignKey: "openDonationId",
       });
-     
     }
   }
   OpenDonation.init(
@@ -44,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       //required
       description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      cloudinaryId: {
         type: DataTypes.STRING,
         allowNull: false,
       },

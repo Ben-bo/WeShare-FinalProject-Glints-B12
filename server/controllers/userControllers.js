@@ -1,9 +1,9 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
-const cloudinary = require("../config/cloudinary");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const log = console.log;
+const { cloudinary } = require("../config/cloudinary");
 
 const routes = {};
 
@@ -182,11 +182,13 @@ routes.login = async (req, res, next) => {
 
 //===============================UPDATE USER===================================
 //update User
+
 routes.putUser = async (req, res) => {
   try {
     const reqBoPass = req.body.password;
     const idParPut = req.params.id;
     const confirmPass = req.body.confirmPassword;
+    const fileStr = req.file.path;
 
     const findUser = await User.findOne({ where: { id: idParPut } });
     if (reqBoPass !== confirmPass || confirmPass == null) {
@@ -196,8 +198,11 @@ routes.putUser = async (req, res) => {
       });
     } else {
       if (findUser) {
+        const uploadRes = await cloudinary.uploader.upload(fileStr, {
+          upload_preset: "dev_setup",
+        });
         await User.update(
-          { ...req.body, password: bcrypt.hashSync(reqBoPass, 10), confirmPassword: bcrypt.hashSync(reqBoPass, 10) },
+          { ...req.body, image: uploadRes.secure_url, cloudinaryId: uploadRes.public_id, password: bcrypt.hashSync(reqBoPass, 10), confirmPassword: bcrypt.hashSync(reqBoPass, 10) },
           {
             where: {
               id: idParPut,
@@ -223,6 +228,43 @@ routes.putUser = async (req, res) => {
     });
   }
 };
+
+//============================================================
+
+// app.put("/upload/:id", uploadFile.single("image"), async (req, res) => {
+//   try {
+//     const fileStr = req.file.path;
+//     const { id: userId } = req.params;
+//     const getUser = await User.findOne({
+//       where: { id: userId },
+//     });
+//     const { cloudinaryId } = getUser;
+//     if (cloudinaryId) {
+//       await cloudinary.uploader.destroy(cloudinaryId, (err, result) => {
+//         console.log(result);
+//       });
+//     }
+//     const uploadRes = await cloudinary.uploader.upload(fileStr, {
+//       upload_preset: "dev_setup",
+//     });
+//     const edtUser = await User.update(
+//       {
+//         name: req.body.name,
+//         profilePicture: uploadRes.secure_url,
+//         cloudinaryId: uploadRes.public_id,
+//       },
+//       { where: { id: userId } }
+//     );
+
+//     res.json({
+//       msg: "edit successfully",
+//       edtUser,
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ err: "something wrong" });
+//   }
+// });
 
 //============================Forgot Password=======================================
 routes.forgetPassword = async (req, res) => {
