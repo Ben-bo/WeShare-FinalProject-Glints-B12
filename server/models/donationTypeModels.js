@@ -10,8 +10,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "donationTypeId",
       });
       //associate to Information
-      DonationType.hasOne(models.Information, {
+      DonationType.hasMany(models.Information, {
         foreignKey: "donationTypeId",
+      });
+
+      DonationType.belongsTo(models.OpenDonationDetails, { 
+        foreignKey: "donationTypeId", targetKey: "id"
       });
     }
   }

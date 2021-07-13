@@ -8,10 +8,10 @@ const routes = {};
 /**
  * Get all category include Open Donation
  */
-routes.getAllCategoryIncludePatient = async (req, res) => {
+routes.getAllCategoryIncludeDonation = async (req, res) => {
   try {
     const category = await Category.findAll({
-      include: [{ model: OpenDonation, include: [{model:OpenDonationDetails,include: [DonationType]}]}],
+      include: [{ model: OpenDonation, include : [{model: OpenDonationDetails, DonationType}]}]
     });
     const categoryResult = {
       statusCode: 200,
@@ -28,18 +28,18 @@ routes.getAllCategoryIncludePatient = async (req, res) => {
 };
 
 /**
- * Get all OpenDonation isUrgent true
+ * Get all Open donation Urgent
  */
 routes.getAllDonationUrgent = async (req, res) => {
   try {
     const donation = await OpenDonation.findAll({
-      include: [{model:OpenDonationDetails,include: [DonationType]}],
-      where: { isUrgent: {[Op.not]: false} },
+    where: { isUrgent: { [Op.not]: false} },
+    include : [{model: DonationType,  model: Information}], include: [Donature]
     });
     const donationResult = {
       statusCode: 200,
       statusText: "Show all Open Donation urgently need help",
-      data: donation,
+      data: donation, 
     };
     res.json(donationResult);
   } catch (err) {
@@ -51,12 +51,36 @@ routes.getAllDonationUrgent = async (req, res) => {
 };
 
 /**
- * Get all openDonation filter by createdAt
+ * Get Open donation by title
+ */
+routes.getDonationByTitle = async (req, res) => {
+  try {
+    let description = req.query.description;
+    const donation = await OpenDonation.findAll({
+      include : [{model: DonationType, include:[{model: Information, include: [Donature]}]}],
+      where: { description: { [Op.iLike]: '%' + description + '%'}}
+    });
+    const donationResult = {
+      statusCode: 200,
+      statusText: "Show all Open Donation by title",
+      data: donation, 
+    };
+    res.json(donationResult);
+  }  catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
+/**
+ * Get all Open donation filter by createdAt
  */
 routes.getAllNewestDonation = async (req, res) => {
   try {
     const donation = await OpenDonation.findAll({
-      include: [{model:OpenDonationDetails,include: [DonationType]}],
+      include : [{model: DonationType, include:[{model: Information, include: [Donature]}]}],
       order: [["createdAt", "DESC"]]
     });
     const donationResult = {
@@ -74,29 +98,43 @@ routes.getAllNewestDonation = async (req, res) => {
 };
 
 /**
- * Get category by id and donationType id include openDonation
+ * Get category by id and donationType id include Open donation
  */
-routes.getCategoryByIdIncludePatient = async (req, res) => {
+routes.getCategoryIdAndDonationTypeId = async (req, res) => {
   try {
-    const { categoryId = [] } = req.body;
-    const category = await Category.findAll({
-      // include: [{ model: OpenDonation,include:[{model:Donature, include :[Information]}],include : [{model: DonationType}]}],
-      include: [{ model: OpenDonation,include:[{model : DonationType}]}],
-    
-     where: { id: { [Op.in]: categoryId } }
+    const { categoryId = [], typeId = [] } = req.body;
+
+    const category = await OpenDonation.findAll({
+      where: { categoryId: { [Op.in]: categoryId } }, 
+      include: [{
+        model: Category, 
+        attributes: [
+          'id', 'categoryName'
+        ],
+        required: false
+      },{
+        model: OpenDonationDetails.scope(null),
+            include: [{ 
+              model: DonationType,
+              where: { id: { [Op.in]: typeId } }, 
+              attributes: ['typeName'],
+              required: false
+            }],
+        required: false,
+      },{ 
+        model: Donature, 
+        include: [{
+          model: Information
+        }]
+      }]
     });
-    
-    if (category) {
       const categoryResult = {
         statusCode: 200,
         statusText: "Success",
-        message: "Show donation by id categories",
+        message: "Show donation by id categories and id donationType",
         data: category,
       };
       res.json(categoryResult);
-    } else {
-      res.status(500).json("Data not found");
-    }
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -107,13 +145,16 @@ routes.getCategoryByIdIncludePatient = async (req, res) => {
 };
 
 /**
- * Get category by id include donationType, patients and donature
+ * Get category by id include Open donation
  */
 routes.getCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const category = await Category.findAll({
-      include: [{ model: OpenDonation, include: [{model:OpenDonationDetails,include: [DonationType]}]}],
+    const category = await Category.findOne({
+      include: [{ model: OpenDonation, include:
+        {
+          model: OpenDonationDetails
+        }}],
       where: { id: categoryId },
     });
     if (category) {

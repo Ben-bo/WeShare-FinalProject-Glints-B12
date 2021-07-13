@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         through : models.OpenDonationDetails,
         foreignKey: "openDonationId",
       });
+      OpenDonation.hasMany(models.OpenDonationDetails,{
+        foreignKey: "openDonationId", sourceKey: "id"
+      })
      
     }
   }

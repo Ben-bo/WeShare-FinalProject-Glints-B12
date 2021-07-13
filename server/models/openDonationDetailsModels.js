@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { DonationType } = require('../models/donationTypeModels');
 
 module.exports = (sequelize, DataTypes) => {
   //Category CLASS
@@ -7,11 +8,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //associate to OpenDonation
       OpenDonationDetails.belongsTo(models.OpenDonation, {
-        foreignKey: "openDonationId",
+        foreignKey: "openDonationId", targetKey: "id"
       });
       //associate to DonationType
-      OpenDonationDetails.belongsTo(models.DonationType, {
-        foreignKey: "donationTypeId",
+      OpenDonationDetails.hasOne(models.DonationType, {
+        foreignKey: "id", sourceKey: "donationTypeId"
       });
     }
   }
@@ -26,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       openDonationId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        foreignKey: true,
+        
       },
       donationTypeId: {
         type: DataTypes.INTEGER,
@@ -50,6 +51,15 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "OpenDonationDetails",
       tableName: "openDonationDetails",
+      scopes: {
+        includeType: {
+          include: [{ 
+            model: DonationType, 
+            attributes: ['typeName'],
+            required: false
+          }]
+        }
+      }
     }
   );
 
