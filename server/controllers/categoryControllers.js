@@ -137,7 +137,7 @@ routes.getCategoryIdAndDonationTypeId = async (req, res) => {
             include: [{ 
               model: DonationType, include : [Information],
               where: { id: { [Op.in]: typeId } }, 
-              attributes: ['typeName', 'icon'],
+              attributes: ['typeName', 'icon','isActive'],
               required: false
             }],
         required: false,
