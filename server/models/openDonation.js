@@ -59,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       isUrgent: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       expiredDate: {
         type: DataTypes.DATEONLY,

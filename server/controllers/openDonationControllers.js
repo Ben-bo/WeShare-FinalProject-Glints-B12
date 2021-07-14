@@ -110,6 +110,12 @@ donationController.getAllById = async (req, res) => {
       include: [categoryModel, { model: donationTypeModel, include: [informationModel] }, { model: donatureModel, include: [userModel, informationModel] }],
       where: { id: openDonationId },
     });
+    if (!dataDonation) {
+      res.status(404).send({
+        status: "Not Found or Invalid Id",
+        suggestion: "Please cek id openDonation on parameter",
+      });
+    }
     res.status(status).send({
       status: status,
       message: message,
@@ -143,6 +149,7 @@ donationController.getAll = async (req, res) => {
           include: [{ model: informationModel, include: [donationTypeModel] }],
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
     res.status(status).send({
       status: status,
@@ -163,10 +170,18 @@ donationController.delete = async (req, res) => {
     let status = 200;
     let message = "OK";
     const openDonationId = req.params.openDonationId;
+
     const userId = req.body.userId;
     const dataOpenDonationById = await openDonationModel.findOne({
       where: { id: openDonationId },
     });
+    if (!dataOpenDonationById) {
+      res.status(404).send({
+        status: "Not Found or Invalid Id",
+        message: "cannot found id on database",
+        suggestion: "Please cek id openDonation on parameter",
+      });
+    }
     if (userId === dataOpenDonationById.userId) {
       const dataDonation = await openDonationModel.destroy({
         where: {
@@ -233,7 +248,13 @@ donationController.update = async (req, res) => {
         const dataOpenDonationById = await openDonationModel.findOne({
           where: { id: openDonationId },
         });
-        console.log(dataOpenDonationById);
+        if (!dataOpenDonationById) {
+          res.status(404).send({
+            status: "Not Found or Invalid Id",
+            message: "cannot found id on database",
+            suggestion: "Please cek id openDonation on parameter",
+          });
+        }
         if (userId === dataOpenDonationById.userId) {
           await cloudinary.uploader.destroy(dataOpenDonationById.cloudinaryId);
           const update = await openDonationModel.update(data, {
@@ -300,7 +321,13 @@ donationController.update = async (req, res) => {
         const dataOpenDonationById = await openDonationModel.findOne({
           where: { id: openDonationId },
         });
-        console.log(dataOpenDonationById);
+        if (!dataOpenDonationById) {
+          res.status(404).send({
+            status: "Not Found or Invalid Id",
+            message: "cannot found id on database",
+            suggestion: "Please cek id openDonation on parameter",
+          });
+        }
         if (userId === dataOpenDonationById.userId) {
           const update = await openDonationModel.update(data, {
             where: { id: openDonationId },
