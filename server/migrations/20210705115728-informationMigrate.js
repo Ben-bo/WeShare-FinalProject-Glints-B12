@@ -30,6 +30,10 @@ module.exports = {
         allowNull: false,
         foreignKey: true,
       },
+      isSelect: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       //auto
       createdAt: {
         type: Sequelize.DATE,
