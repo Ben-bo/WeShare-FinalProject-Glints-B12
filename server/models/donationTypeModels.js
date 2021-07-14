@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       icon: {
         type: DataTypes.STRING,
       },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       //auto
       createdAt: {
         type: DataTypes.DATE,
