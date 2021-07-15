@@ -5,7 +5,9 @@ const {
   Donature: donatureModel,
   OpenDonationDetails: openDonationDetailsModel,
   Information: informationModel,
+  User: userModel,
 } = require("../models");
+const sequelize = require("sequelize");
 const { cloudinary } = require("../config/cloudinary");
 // const path = require("path");
 const donationController = {};
@@ -99,7 +101,6 @@ donationController.getAllById = async (req, res) => {
     let status = 200;
     let message = "OK";
     const openDonationId = req.params.id;
-
     const dataDonation = await openDonationModel.findOne({
       include: [
         { model: categoryModel },
@@ -151,10 +152,13 @@ donationController.getAll = async (req, res) => {
         {
           model: donatureModel,
           attributes: ["id"],
-          include: [{ model: informationModel, include: [donationTypeModel] }],
+          include: [
+            {
+              model: informationModel,
+            },
+          ],
         },
       ],
-      order: [["createdAt", "DESC"]],
     });
     res.status(status).send({
       status: status,
