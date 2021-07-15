@@ -8,6 +8,7 @@
 | POST   | /api/weShare/user/login                          | login user to get token for authentication          |
 | GET    | /api/weShare/user/:id                            | API get User by/:id                                 |
 | PUT    | /api/weShare/user/forgetPassword                 | API for changed Password                            |
+| PUT    | /api/weShare/user/verifyAccount/:id              | API for verify Account ( by /:id)                   |
 | PUT    | /api/weShare/user/editProfile/:id                | API for edit user profile ( by /:id)                |
 | GET    | /api/weShare/allCategory                         | API for get all category include Opendonation       |
 | GET    | /api/weShare/category/details/:id                | API for get Opendonation by category id             |
