@@ -2,16 +2,20 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  //Category CLASS
-  class PaymentMethod extends Model {
+  class Payment extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      //associate to Donature
-      PaymentMethod.belongsTo(models.Donature, {
+      // define association here
+      Payment.belongsTo(models.Donature, {
         foreignKey: "donatureId",
       });
     }
   }
-  PaymentMethod.init(
+  Payment.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -19,13 +23,24 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
       },
-      description: {
-        type: DataTypes.STRING,
-      },
       donatureId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         foreignKey: true,
+      },
+      paymentMethod: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
+      },
+      paymentReceipt: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      cloudinary_id: {
+        type: DataTypes.STRING,
       },
       //auto
       createdAt: {
@@ -42,10 +57,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "PaymentMethod",
-      tableName: "paymentMethods",
+      modelName: "Payment",
+      tableName: "payments",
     }
   );
-
-  return PaymentMethod;
+  return Payment;
 };

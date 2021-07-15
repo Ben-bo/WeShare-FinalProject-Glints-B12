@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         through: models.OpenDonationDetails,
         foreignKey: "openDonationId",
       });
+      OpenDonation.hasMany(models.OpenDonationDetails,{
+        foreignKey: "openDonationId", sourceKey: "id"
+      })
+     
     }
   }
   OpenDonation.init(
@@ -55,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       isUrgent: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       expiredDate: {
         type: DataTypes.DATEONLY,
