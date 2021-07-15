@@ -34,12 +34,14 @@ module.exports = {
       },
       birthDate: {
         type: Sequelize.DATEONLY,
+        allowNull: true,
       },
       bornPlace: {
         type: Sequelize.STRING,
       },
       nikExpired: {
         type: Sequelize.DATEONLY,
+        allowNull: true,
       },
       isEktp: {
         type: Sequelize.BOOLEAN,
@@ -48,6 +50,9 @@ module.exports = {
         type: Sequelize.STRING,
       },
       cloudinaryId: {
+        type: Sequelize.STRING,
+      },
+      cloudinaryKtpId: {
         type: Sequelize.STRING,
       },
       //auto
