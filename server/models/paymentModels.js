@@ -1,17 +1,20 @@
 "use strict";
 const { Model } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
-  //Category CLASS
-  class PaymentMethod extends Model {
+  class Payment extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      //associate to Donature
-      PaymentMethod.belongsTo(models.Donature, {
+      // define association here
+      Payment.belongsTo(models.Donature, {
         foreignKey: "donatureId",
       });
     }
   }
-  PaymentMethod.init(
+  Payment.init(
     {
       id: {
         type: DataTypes.INTEGER,
@@ -25,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: true,
       },
       paymentMethod: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       description: {
@@ -50,10 +53,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "PaymentMethod",
-      tableName: "paymentMethods",
+      modelName: "Payment",
+      tableName: "payment",
     }
   );
-
-  return PaymentMethod;
+  return Payment;
 };

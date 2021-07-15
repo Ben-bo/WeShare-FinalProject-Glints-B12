@@ -31,8 +31,8 @@ app.use(
   categoryRoutes,
   donationTypeRoutes,
   donatureRoutes,
-  openDonation
-  // paymentRoutes
+  openDonation,
+  paymentRoutes
 );
 
 app.get("/", (req, res) => {

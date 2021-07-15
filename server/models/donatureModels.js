@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "donatureId",
       });
       //associate to PaymentMethod
-      Donature.hasOne(models.PaymentMethod, {
+      Donature.hasOne(models.Payment, {
         foreignKey: "donatureId",
       });
       //associate to User

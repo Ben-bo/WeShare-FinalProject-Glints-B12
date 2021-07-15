@@ -19,6 +19,7 @@ method.createDonature = async (req, res) => {
       donationTypeId: req.body.donationTypeId,
       donatureId: pivot.id,
     });
+
     res.status(200).json({
       statusText: "Donate Success",
       data: donature,
