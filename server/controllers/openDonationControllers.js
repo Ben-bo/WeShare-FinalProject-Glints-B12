@@ -101,22 +101,20 @@ donationController.getAllById = async (req, res) => {
     let status = 200;
     let message = "OK";
     const openDonationId = req.params.id;
-    const dataDonation = await openDonationModel.findOne({
-      include: [
-        { model: categoryModel },
-        {
-          model: openDonationDetailsModel,
-          attributes: ["id"],
-          include: [donationTypeModel],
-        },
-        {
-          model: donatureModel,
-          attributes: ["id"],
-          include: [{ model: informationModel, include: [donationTypeModel] }],
-        },
-      ],
-      where: { id: openDonationId },
-    });
+    //   where: { id: openDonationId },
+    // });
+
+    //repair by Budi Hartono
+    const dataDonation = await openDonationModel.findOne(
+      {
+        include: [
+          categoryModel,
+          { model: donationTypeModel, include: [informationModel] },
+          { model: donatureModel, include: [userModel, informationModel] },
+        ],
+      },
+      { where: { id: openDonationId } }
+    );
     if (!dataDonation) {
       res.status(404).send({
         status: "Not Found or Invalid Id",
@@ -133,10 +131,11 @@ donationController.getAllById = async (req, res) => {
     res.status(500).send({
       status: 500,
       message: "Failed to get Data Donation",
-      erorr: error,
+      erorr: error.message,
     });
   }
 };
+
 donationController.getAll = async (req, res) => {
   try {
     let status = 200;

@@ -5,14 +5,19 @@ module.exports = (sequelize, DataTypes) => {
   //DonationType CLASS
   class DonationType extends Model {
     static associate(models) {
-      //associate to OpenDonationDetails
-      DonationType.hasMany(models.OpenDonationDetails, {
+      DonationType.belongsToMany(models.OpenDonation, {
+        through: models.OpenDonationDetails,
         foreignKey: "donationTypeId",
+        targetKey: "id"
       });
       //associate to Information
-      DonationType.hasOne(models.Information, {
+      DonationType.hasMany(models.Information, {
         foreignKey: "donationTypeId",
       });
+
+      // DonationType.belongsTo(models.OpenDonationDetails, { 
+      //   foreignKey: "donationTypeId", targetKey: "id"
+      // });
     }
   }
   DonationType.init(
@@ -28,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       icon: {
         type: DataTypes.STRING,
+      },
+      isActive: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       //auto
       createdAt: {

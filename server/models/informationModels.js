@@ -45,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         foreignKey: true,
       },
+      isSelect: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       //auto
       createdAt: {
         type: DataTypes.DATE,

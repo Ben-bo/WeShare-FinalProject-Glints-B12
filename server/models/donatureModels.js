@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Donature extends Model {
     static associate(models) {
       //associate to Information
-      Donature.hasOne(models.Information, {
+      Donature.hasMany(models.Information, {
         foreignKey: "donatureId",
       });
       //associate to PaymentMethod

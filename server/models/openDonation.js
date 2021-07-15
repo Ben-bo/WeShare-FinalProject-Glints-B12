@@ -13,14 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       OpenDonation.belongsTo(models.User, {
         foreignKey: "userId",
       });
-      //associate to OpenDonationDetails
-      OpenDonation.hasMany(models.OpenDonationDetails, {
-        foreignKey: "openDonationId",
-      });
       //associate to Donature
       OpenDonation.hasMany(models.Donature, {
         foreignKey: "openDonationId",
       });
+      OpenDonation.belongsToMany(models.DonationType, {
+        through: models.OpenDonationDetails,
+        foreignKey: "openDonationId",
+      });
+      OpenDonation.hasMany(models.OpenDonationDetails,{
+        foreignKey: "openDonationId", sourceKey: "id"
+      })
+     
     }
   }
   OpenDonation.init(
