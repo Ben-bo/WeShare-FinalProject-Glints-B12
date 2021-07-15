@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Payment extends Model {
     /**
@@ -38,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      cloudinary_id: {
+        type: DataTypes.STRING,
+      },
       //auto
       createdAt: {
         type: DataTypes.DATE,
@@ -54,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Payment",
-      tableName: "payment",
+      tableName: "payments",
     }
   );
   return Payment;

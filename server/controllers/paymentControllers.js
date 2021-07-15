@@ -17,6 +17,7 @@ method.createPayment = async (req, res) => {
     if (errorCek) {
       res.status(500).send({ status: 500, message: errorCek });
     } else {
+      // Upload image to cloudinary
       const fileStr = req.file.path;
       const uploadRes = await cloudinary.uploader.upload(fileStr, {
         upload_preset: "dev_setup",
@@ -27,6 +28,7 @@ method.createPayment = async (req, res) => {
         paymentMethod: req.body.paymentMethod,
         description: req.body.description,
         paymentReceipt: uploadRes.secure_url,
+        cloudinary_id: uploadRes.public_id,
       });
 
       res.status(200).json({
@@ -41,6 +43,8 @@ method.createPayment = async (req, res) => {
     });
   }
 };
+
+//==Delete===================================================================================================================
 
 //==Export method===================================================================================================================
 module.exports = method;
