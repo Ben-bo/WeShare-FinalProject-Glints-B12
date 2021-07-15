@@ -101,12 +101,9 @@ donationController.getAllById = async (req, res) => {
     let status = 200;
     let message = "OK";
     const openDonationId = req.params.id;
-<<<<<<< HEAD
-=======
     //   where: { id: openDonationId },
     // });
     //repair by Budi Hartono
->>>>>>> 283616c2b60a5fb6052368b86d6a2c40c38dd920
     const dataDonation = await openDonationModel.findOne({
       include: [
         categoryModel,
