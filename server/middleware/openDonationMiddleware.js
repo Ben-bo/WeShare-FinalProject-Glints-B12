@@ -98,3 +98,17 @@ exports.uploadImg = async (req, res, next) => {
     next();
   });
 };
+
+exports.uploadImgArr = async (req, res, next) => {
+  let upload = uploadImg.array("image", "ktpPicture");
+  upload(req, res, function (err) {
+    if (err) {
+      res.status(500).send({
+        statusText: "Bad Request",
+        error: err.message,
+        suggestion: "Min file size is 500kb",
+      });
+    }
+    next();
+  });
+};
