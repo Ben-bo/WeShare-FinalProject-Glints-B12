@@ -29,7 +29,7 @@
 | GET    | /api/weShare/category/donation                   | Get Opendonation by category id and donationType id |
 | POST   | /api/weShare/createPayment                       | create payment                                      |
 
-# Last Update on (14 July 2021 | 19:23 WIB)
+# Last Update on (15 July 2021 | 23:00 WIB)
 
 # -----------------------------------------
 
