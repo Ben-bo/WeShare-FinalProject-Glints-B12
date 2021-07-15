@@ -14,6 +14,10 @@ module.exports = {
       icon: {
         type: Sequelize.STRING,
       },
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       //auto
       createdAt: {
         type: Sequelize.DATE,

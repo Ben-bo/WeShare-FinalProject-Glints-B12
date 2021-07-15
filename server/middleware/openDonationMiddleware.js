@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const uploadImg = require("../controllers/multer");
 exports.donationValidate = async (req, res, next) => {
   try {
     const img = req.file;
@@ -75,4 +76,22 @@ exports.donationValidateUpdate = async (req, res, next) => {
       data: error,
     });
   }
+};
+exports.uploadImg = async (req, res, next) => {
+  let upload = uploadImg.single("image");
+  upload(req, res, function (err) {
+    if (err.code == "LIMIT_FILE_SIZE") {
+      res.status(500).send({
+        statusText: "Internal Server Error",
+        error: err.message,
+        suggestion: "Max file size is 500kb",
+      });
+    } else {
+      res.status(415).send({
+        error: err.message,
+        suggestion: "please provide image with .jpg, .jpeg or .png extension",
+      });
+    }
+    next();
+  });
 };

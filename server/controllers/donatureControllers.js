@@ -1,4 +1,4 @@
-const { User, Donature, Information, OpenDonation } = require("../models");
+const { Donature, Information } = require("../models");
 
 const sequelize = require("sequelize");
 const method = {};

@@ -5,20 +5,19 @@ const routes = {};
 routes.createDonationType = async (req, res) => {
   try {
     const donationType = await DonationType.create({
-      ...req.body
+      ...req.body,
     });
     const donationTypeResult = {
       statusCode: 200,
       statusText: "Success",
       message: "donation has been create",
-      data: donationType
+      data: donationType,
     };
     res.json(donationTypeResult);
-    
   } catch (err) {
     res.status(500).json({
-    statusText: "Internal Server Error",
-    message: err.message,
+      statusText: "Internal Server Error",
+      message: err.message,
     });
   }
 };

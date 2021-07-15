@@ -1,6 +1,8 @@
 const express = require("express");
 
 const router = express.Router();
+//==Import Controller===================================================================================================================
+
 const {
   createDonature,
   getAllDonature,
@@ -8,15 +10,18 @@ const {
   getMyDonation,
 } = require("../controllers/donatureControllers");
 
-const { tokenVerify } = require("../middleware/tokenDonature");
-const { donatureValidate } = require("../middleware/donatureMiddleware");
+const {
+  tokenVerify,
+  donatureValidate,
+} = require("../middleware/donatureMiddleware");
 
-//========================================Donature==============================
+//==Donature===================================================================================================================
 
 router.get("/myDonation", getMyDonation);
 router.get("/allDonature", getAllDonature);
 router.get("/donatureById/:id", getDonatureById);
 router.post("/createDonature", tokenVerify, donatureValidate, createDonature);
 
-//========================================Export Router===============================
+//==Export Routes===================================================================================================================
+
 module.exports = router;

@@ -32,7 +32,7 @@ module.exports = {
       NIK: {
         type: Sequelize.BIGINT,
       },
-      bithDate: {
+      birthDate: {
         type: Sequelize.DATEONLY,
       },
       bornPlace: {
@@ -45,6 +45,9 @@ module.exports = {
         type: Sequelize.BOOLEAN,
       },
       ktpPicture: {
+        type: Sequelize.STRING,
+      },
+      cloudinaryId: {
         type: Sequelize.STRING,
       },
       //auto

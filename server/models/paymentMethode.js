@@ -19,13 +19,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
       },
-      description: {
-        type: DataTypes.STRING,
-      },
       donatureId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         foreignKey: true,
+      },
+      paymentMethod: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.STRING,
+      },
+      paymentReceipt: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       //auto
       createdAt: {
