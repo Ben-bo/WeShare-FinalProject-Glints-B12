@@ -200,14 +200,10 @@ donationController.delete = async (req, res) => {
       if (dataDonation) {
         await cloudinary.uploader.destroy(dataOpenDonationById.cloudinaryId);
       }
-      const dataOpenDonation = await openDonationModel.findAll({
-        where: { id: openDonationId },
-      });
       res.status(status).send({
         status: status,
         message: message,
         rowEffected: dataDonation,
-        data: dataOpenDonation,
       });
     } else {
       status = 500;
@@ -283,26 +279,11 @@ donationController.update = async (req, res) => {
               });
             }
           }
-          const dataOpenDonation = await openDonationModel.findOne(
-            {
-              include: [
-                { model: categoryModel },
-                {
-                  model: openDonationDetailsModel,
-                  attributes: ["id"],
-                  include: [donationTypeModel],
-                },
-              ],
-            },
-            {
-              where: { id: openDonationId },
-            }
-          );
+
           res.status(status).send({
             status,
             message,
             totalRowChanged: update,
-            data: dataOpenDonation,
           });
         } else {
           status = 500;
