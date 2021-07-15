@@ -101,6 +101,12 @@ donationController.getAllById = async (req, res) => {
     let status = 200;
     let message = "OK";
     const openDonationId = req.params.id;
+<<<<<<< HEAD
+=======
+    //   where: { id: openDonationId },
+    // });
+    //repair by Budi Hartono
+>>>>>>> 283616c2b60a5fb6052368b86d6a2c40c38dd920
     const dataDonation = await openDonationModel.findOne({
       include: [
         categoryModel,
@@ -136,21 +142,9 @@ donationController.getAll = async (req, res) => {
     let message = "OK";
     const dataDonation = await openDonationModel.findAll({
       include: [
-        { model: categoryModel },
-        {
-          model: openDonationDetailsModel,
-          attributes: ["id"],
-          include: [donationTypeModel],
-        },
-        {
-          model: donatureModel,
-          attributes: ["id"],
-          include: [
-            {
-              model: informationModel,
-            },
-          ],
-        },
+        categoryModel,
+        { model: donationTypeModel, include: [informationModel] },
+        { model: donatureModel, include: [userModel, informationModel] },
       ],
     });
     res.status(status).send({
@@ -193,14 +187,10 @@ donationController.delete = async (req, res) => {
       if (dataDonation) {
         await cloudinary.uploader.destroy(dataOpenDonationById.cloudinaryId);
       }
-      const dataOpenDonation = await openDonationModel.findAll({
-        where: { id: openDonationId },
-      });
       res.status(status).send({
         status: status,
         message: message,
         rowEffected: dataDonation,
-        data: dataOpenDonation,
       });
     } else {
       status = 500;
@@ -276,26 +266,11 @@ donationController.update = async (req, res) => {
               });
             }
           }
-          const dataOpenDonation = await openDonationModel.findOne(
-            {
-              include: [
-                { model: categoryModel },
-                {
-                  model: openDonationDetailsModel,
-                  attributes: ["id"],
-                  include: [donationTypeModel],
-                },
-              ],
-            },
-            {
-              where: { id: openDonationId },
-            }
-          );
+
           res.status(status).send({
             status,
             message,
             totalRowChanged: update,
-            data: dataOpenDonation,
           });
         } else {
           status = 500;

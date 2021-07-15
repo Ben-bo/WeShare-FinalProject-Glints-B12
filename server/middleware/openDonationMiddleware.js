@@ -87,12 +87,14 @@ exports.uploadImg = async (req, res, next) => {
           error: err.message,
           suggestion: "Max file size is 500kb",
         });
+      } else {
+        res.status(415).send({
+          error: err.message,
+          suggestion: "please provide image with .jpg, .jpeg or .png extension",
+        });
       }
-      res.status(415).send({
-        error: err.message,
-        suggestion: "please provide image with .jpg, .jpeg or .png extension",
-      });
     }
+
     next();
   });
 };
