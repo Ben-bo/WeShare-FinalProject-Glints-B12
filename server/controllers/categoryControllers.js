@@ -124,6 +124,13 @@ routes.getAllNewestDonation = async (req, res) => {
 routes.getCategoryIdAndDonationTypeId = async (req, res) => {
   try {
     const { categoryId = [], typeId = [] } = req.body;
+
+    const informations = await Information.sum('amount',{
+      where: { donationTypeId: { [Op.in]: typeId } },
+      group: 'donationTypeId'
+  })
+  console.log("👾 ~ file: categoryControllers.js ~ line 151 ~ routes.getCategoryIdAndDonationTypeId= ~ informations", informations)
+
     const category = await OpenDonation.findAll({
       where: { categoryId: { [Op.in]: categoryId } }, 
       include: [{
@@ -135,7 +142,7 @@ routes.getCategoryIdAndDonationTypeId = async (req, res) => {
       },{
         model: OpenDonationDetails.scope(null),
             include: [{ 
-              model: DonationType, include : [Information],
+              model: DonationType,include : [Information],
               where: { id: { [Op.in]: typeId } }, 
               attributes: ['typeName', 'icon','isActive'],
               required: false
@@ -143,6 +150,7 @@ routes.getCategoryIdAndDonationTypeId = async (req, res) => {
         required: false,
       }]
     });
+    
     const categoryResult = {
       statusCode: 200,
       statusText: "Success",
