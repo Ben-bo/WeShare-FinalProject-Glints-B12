@@ -107,7 +107,7 @@ donationController.getAllById = async (req, res) => {
     const dataDonation = await openDonationModel.findOne({
       include: [
         categoryModel,
-        { model: donationTypeModel, include: [informationModel] },
+        { model: donationTypeModel },
         { model: donatureModel, include: [userModel, informationModel] },
       ],
       where: { id: openDonationId },
@@ -140,7 +140,7 @@ donationController.getAll = async (req, res) => {
     const dataDonation = await openDonationModel.findAll({
       include: [
         categoryModel,
-        { model: donationTypeModel, include: [informationModel] },
+        { model: donationTypeModel },
         { model: donatureModel, include: [userModel, informationModel] },
       ],
     });
