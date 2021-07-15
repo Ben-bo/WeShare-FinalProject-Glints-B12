@@ -9,7 +9,7 @@ const {
 } = require("../models");
 const sequelize = require("sequelize");
 const { cloudinary } = require("../config/cloudinary");
-// const path = require("path");
+
 const donationController = {};
 donationController.create = async (req, res) => {
   try {
