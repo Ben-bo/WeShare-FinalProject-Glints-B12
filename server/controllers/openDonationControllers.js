@@ -8,7 +8,7 @@ const {
   User: userModel,
 } = require("../models");
 const { cloudinary } = require("../config/cloudinary");
-// const path = require("path");
+
 const donationController = {};
 donationController.create = async (req, res) => {
   try {
