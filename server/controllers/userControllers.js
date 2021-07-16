@@ -185,40 +185,51 @@ routes.login = async (req, res, next) => {
 
 routes.putUser = async (req, res) => {
   try {
-    const reqBoPass = req.body.password;
     const idParPut = req.params.id;
-    const confirmPass = req.body.confirmPassword;
-    const fileStr = req.file.path;
+    // const fileStr = req.file.path;
 
     const findUser = await User.findOne({ where: { id: idParPut } });
-    if (reqBoPass !== confirmPass || confirmPass == null) {
-      return res.status(409).json({
-        statusText: "Conflict",
-        messsage: "Password didn't match, please try again!",
-      });
-    } else {
-      if (findUser) {
-        const uploadRes = await cloudinary.uploader.upload(fileStr, {
+
+    if (findUser) {
+      const uploadRes = async (path) =>
+        await cloudinary.uploader.upload(path, {
           upload_preset: "dev_setup",
         });
-        await User.update(
-          { ...req.body, image: uploadRes.secure_url, cloudinaryId: uploadRes.public_id, password: bcrypt.hashSync(reqBoPass, 10), confirmPassword: bcrypt.hashSync(reqBoPass, 10) },
-          {
-            where: {
-              id: idParPut,
-            },
-          }
-        );
-        res.status(200).json({
-          statusText: "Updated",
-          message: `User with ID: ${idParPut} has been updated!`,
-        });
+
+      if (req.method === "PUT") {
+        const urls = [];
+        const files = req.files;
+        for (const file of files) {
+          const { path } = file;
+          const newPath = await uploadRes(path);
+          urls.push(newPath);
+          // fs.unlinkSync(path);
+          await User.update(
+            { ...req.body, image: newPath.url, cloudinaryId: newPath.public_id },
+            {
+              where: {
+                id: idParPut,
+              },
+            }
+          );
+          res.status(200).json({
+            statusText: "Updated",
+            message: `User with ID: ${idParPut} has been updated!`,
+            data: urls,
+          });
+          console.log(urls);
+        }
       } else {
-        res.status(404).json({
-          statusText: "Not Found",
-          message: `User with ID: ${idParPut} not found, please try again`,
+        res.status(500).json({
+          statusText: "Internal server error",
+          message: "Methode don't support",
         });
       }
+    } else {
+      res.status(404).json({
+        statusText: "Not Found",
+        message: `User with ID: ${idParPut} not found, please try again`,
+      });
     }
   } catch (err) {
     res.status(500).json({
@@ -226,45 +237,71 @@ routes.putUser = async (req, res) => {
       message: `Sorry, we failed to update your profile`,
       Error: err.message,
     });
+    console.log(err);
   }
 };
 
 //============================================================
 
-// app.put("/upload/:id", uploadFile.single("image"), async (req, res) => {
-//   try {
-//     const fileStr = req.file.path;
-//     const { id: userId } = req.params;
-//     const getUser = await User.findOne({
-//       where: { id: userId },
-//     });
-//     const { cloudinaryId } = getUser;
-//     if (cloudinaryId) {
-//       await cloudinary.uploader.destroy(cloudinaryId, (err, result) => {
-//         console.log(result);
-//       });
-//     }
-//     const uploadRes = await cloudinary.uploader.upload(fileStr, {
-//       upload_preset: "dev_setup",
-//     });
-//     const edtUser = await User.update(
-//       {
-//         name: req.body.name,
-//         profilePicture: uploadRes.secure_url,
-//         cloudinaryId: uploadRes.public_id,
-//       },
-//       { where: { id: userId } }
-//     );
+routes.verifyAccount = async (req, res) => {
+  try {
+    const idParPut = req.params.id;
+    // const fileStr = req.file.path;
+    const findUser = await User.findOne({ where: { id: idParPut } });
 
-//     res.json({
-//       msg: "edit successfully",
-//       edtUser,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ err: "something wrong" });
-//   }
-// });
+    if (findUser) {
+      const uploadRes = async (path) =>
+        await cloudinary.uploader.upload(path, {
+          upload_preset: "dev_setup",
+        });
+
+      if (req.method === "PUT") {
+        const urls = [];
+        const files = req.files;
+        for (const file of files) {
+          const { path } = file;
+          const newPath = await uploadRes(path);
+          urls.push(newPath);
+          // fs.unlinkSync(path);
+
+          // const ktp = req.files.ktpPicture;
+          // ktp = image;
+          await User.update(
+            { ...req.body, ktpPicture: newPath.url, cloudinaryKtpId: newPath.public_id },
+            {
+              where: {
+                id: idParPut,
+              },
+            }
+          );
+          res.status(200).json({
+            statusText: "Updated",
+            message: `User with ID: ${idParPut} has been Verify!`,
+            data: urls,
+          });
+          console.log(urls);
+        }
+      } else {
+        res.status(500).json({
+          statusText: "Internal server error",
+          message: "Methode don't support",
+        });
+      }
+    } else {
+      res.status(404).json({
+        statusText: "Not Found",
+        message: `User with ID: ${idParPut} not found, please try again`,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: `Sorry, we failed to update your profile`,
+      Error: err.message,
+    });
+    console.log(err);
+  }
+};
 
 //============================Forgot Password=======================================
 routes.forgetPassword = async (req, res) => {
@@ -356,7 +393,6 @@ routes.forgetPassword = async (req, res) => {
     });
   }
 };
-
 //===============================Get User By Id======================================
 routes.getUserById = async (req, res) => {
   try {

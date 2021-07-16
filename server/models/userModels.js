@@ -49,12 +49,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       birthDate: {
         type: DataTypes.DATEONLY,
+        allowNull: true,
       },
       bornPlace: {
         type: DataTypes.STRING,
       },
       nikExpired: {
         type: DataTypes.DATEONLY,
+        allowNull: true,
       },
       isEktp: {
         type: DataTypes.BOOLEAN,
@@ -63,6 +65,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       cloudinaryId: {
+        type: DataTypes.STRING,
+      },
+      cloudinaryKtpId: {
         type: DataTypes.STRING,
       },
       //auto
