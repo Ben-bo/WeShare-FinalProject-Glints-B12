@@ -20,7 +20,7 @@ method.createPayment = async (req, res) => {
       // Upload image to cloudinary
       const fileStr = req.file.path;
       const uploadRes = await cloudinary.uploader.upload(fileStr, {
-        upload_preset: "dev_setup",
+        upload_preset: "payment_receipt",
       });
 
       const data = await Payment.create({
@@ -44,7 +44,39 @@ method.createPayment = async (req, res) => {
   }
 };
 
-//==Delete===================================================================================================================
+//==Get All Payment===================================================================================================================
+method.getPayment = async (req, res) => {
+  try {
+    const errorCek = req.error;
+    if (errorCek) {
+      res.status(500).send({ status: 500, message: errorCek });
+    } else {
+      // Upload image to cloudinary
+      const result = await Payment.findAll();
+      res.status(200).json({
+        message: "this is List of Payment",
+        data: result,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
+//==Update Payment===================================================================================================================
+method.updatePayment = async (req, res) => {
+  try {
+    let payment = await Payment.findAll({ where: { id: req.params.id } });
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
 
 //==Export method===================================================================================================================
 module.exports = method;
