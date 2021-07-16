@@ -1,7 +1,9 @@
-const { Category, DonationType, OpenDonation, Donature, OpenDonationDetails, Information } = require("../models");
+const { Category, DonationType, OpenDonation, Donature, OpenDonationDetails, Information, sequelize } = require("../models");
 
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
+
+const { QueryTypes } = require("sequelize");
 
 const routes = {};
 
@@ -125,12 +127,20 @@ routes.getCategoryIdAndDonationTypeId = async (req, res) => {
   try {
     const { categoryId = [], typeId = [] } = req.body;
 
-    const informations = await Information.sum('amount',{
-      where: { donationTypeId: { [Op.in]: typeId } },
-      group: 'donationTypeId'
-  })
-  console.log("👾 ~ file: categoryControllers.js ~ line 151 ~ routes.getCategoryIdAndDonationTypeId= ~ informations", informations)
+  //   const informations = await Information.sum('amount',{
+  //     where: { donationTypeId: { [Op.in]: typeId } },
+  //     group: 'donationTypeId'
+  // })
+  // console.log("👾 ~ file: categoryControllers.js ~ line 151 ~ routes.getCategoryIdAndDonationTypeId= ~ informations", informations)
 
+    const totalDonation = await sequelize.query(`  
+    SELECT "donationTypeId", sum("amount") AS "total" 
+    FROM "informations" AS "information" 
+    GROUP BY "information"."donationTypeId" 
+    ORDER BY total DESC;`, { type: QueryTypes.SELECT });
+
+    console.log("👾 ~ file: categoryControllers.js ~ line 137 ~ routes.getCategoryIdAndDonationTypeId= ~ totalDonation", totalDonation)
+    
     const category = await OpenDonation.findAll({
       where: { categoryId: { [Op.in]: categoryId } }, 
       include: [{
