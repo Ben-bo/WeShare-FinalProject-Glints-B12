@@ -64,7 +64,7 @@ routes.getAllDonationUrgent = async (req, res) => {
  */
 routes.getDonationByTitle = async (req, res) => {
   try {
-    let description = req.query.description;
+    let title = req.query.donationName;
     const donation = await OpenDonation.findAll({
       include: [{
         model: Category, 
@@ -74,7 +74,7 @@ routes.getDonationByTitle = async (req, res) => {
               model: DonationType, include : [Information],
             }],
       }],
-      where: { description: { [Op.iLike]: '%' + description + '%'}}
+      where: { donationName: { [Op.iLike]: '%' + title + '%'}}
     });
     const donationResult = {
       statusCode: 200,
