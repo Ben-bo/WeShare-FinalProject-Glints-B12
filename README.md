@@ -32,8 +32,8 @@
 | GET    | /api/weShare/getPayment                          | Get all payment                                     |
 | PUT    | /api/weShare/updatePayment/:id                   | update payment by id                                |
 | DELETE | /api/weShare/createPayment/:id                   | Delete payment by id                                |
-| GET    | /api/weShare/category/allCategory         | Get All Category    |
-| GET    | /api/weShare/category/AllDonationType         | Get All Donation Type    |
+| GET    | /api/weShare/allCategory         | Get All Category    |
+| GET    | /api/weShare/allDonationType         | Get All Donation Type    |
 # Last Update on (19 July 2021 | 22:00 33)
 
 # -----------------------------------------
