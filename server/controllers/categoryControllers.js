@@ -13,7 +13,11 @@ const routes = {};
 routes.getAllCategoryIncludeDonation = async (req, res) => {
   try {
     const category = await Category.findAll({
-      include: [{ model: OpenDonation, include:{model: DonationType, include : Information}}]
+      include: [{ model: OpenDonation, include:{ model: OpenDonationDetails, 
+        include: {
+        model: DonationType, 
+        include: Information }} 
+      }]
     });
     const categoryResult = {
       statusCode: 200,
@@ -184,7 +188,11 @@ routes.getCategoryById = async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findOne({
-      include: [{ model: OpenDonation, include:{model: DonationType, include : Information}}],
+      include: [{ model: OpenDonation, include:{ model: OpenDonationDetails, 
+        include: {
+        model: DonationType, 
+        include: Information }} 
+      }],
       where: { id: categoryId },
     });
     if (category) {
