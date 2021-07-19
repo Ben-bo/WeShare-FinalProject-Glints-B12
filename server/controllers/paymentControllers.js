@@ -20,13 +20,11 @@ method.createPayment = async (req, res) => {
       // Upload image to cloudinary
       const fileStr = req.file.path;
       const uploadRes = await cloudinary.uploader.upload(fileStr, {
-        upload_preset: "dev_setup",
+        upload_preset: "payment_receipt",
       });
 
-      const data = await Payment.create({
-        donatureId: req.body.donatureId,
-        paymentMethod: req.body.paymentMethod,
-        description: req.body.description,
+      let data = await Payment.create({
+        ...req.body,
         paymentReceipt: uploadRes.secure_url,
         cloudinary_id: uploadRes.public_id,
       });
@@ -44,7 +42,85 @@ method.createPayment = async (req, res) => {
   }
 };
 
-//==Delete===================================================================================================================
+//==Get All Payment===================================================================================================================
+method.getPayment = async (req, res) => {
+  try {
+    const errorCek = req.error;
+    if (errorCek) {
+      res.status(500).send({ status: 500, message: errorCek });
+    } else {
+      // Upload image to cloudinary
+      let result = await Payment.findAll();
+      res.status(200).json({
+        message: "this is List of Payment",
+        data: result,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
+//==Update Payment===================================================================================================================
+method.updatePayment = async (req, res) => {
+  try {
+    let payment = await Payment.findOne({ where: { id: req.params.id } });
+
+    await cloudinary.uploader.destroy(payment.cloudinary_id);
+    const fileStr = req.file.path;
+    const result = await cloudinary.uploader.upload(fileStr, {
+      upload_preset: "payment_receipt",
+    });
+
+    let data = {
+      donatureId: req.body.donatureId || payment.donatureId,
+      paymentMethod: req.body.paymentMethod || payment.paymentMethod,
+      description: req.body.description || payment.description,
+      paymentReceipt: result.secure_url || payment.paymentReceipt,
+      cloudinary_id: result.public_id || payment.cloudinary_id,
+    };
+    await Payment.update(data, {
+      where: { id: req.params.id },
+    });
+
+    res.status(200).json({
+      message: "Update has been successful",
+      data: data,
+    });
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
+//==Delete Payment===================================================================================================================
+method.deletePayment = async (req, res) => {
+  try {
+    let payment = await Payment.findOne({ where: { id: req.params.id } });
+
+    await cloudinary.uploader.destroy(payment.cloudinary_id);
+
+    await Payment.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json({
+      Data: payment,
+      statusText: "The data above has been deleted",
+    });
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
 
 //==Export method===================================================================================================================
 module.exports = method;
