@@ -150,7 +150,7 @@ routes.getCategoryIdAndDonationTypeId = async (req, res) => {
       include: [{
         model: Category, 
         attributes: [
-          'id', 'categoryName'
+          'id', 'categoryName', 'isActive'
         ],
         required: false
       },{
@@ -214,6 +214,46 @@ routes.getCategoryById = async (req, res) => {
     });
   }
 };
+
+/**
+ * Get all category
+ */
+routes.getAllCategory = async (req, res) => {
+  try {
+    const category = await Category.findAll();
+    const categoryResult = {
+      statusCode: 200,
+      statusText: "Show all categories",
+      data: category,
+    };
+    res.json(categoryResult);
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+};
+
+/**
+ * Get all donationType
+ */
+routes.getAllDonationType = async (req, res) => {
+  try {
+    const donationType = await DonationType.findAll();
+    const donationTypeResult = {
+      statusCode: 200,
+      statusText: "Show all donation type",
+      data: donationType,
+    };
+    res.json(donationTypeResult);
+  } catch (err) {
+    res.status(500).json({
+      statusText: "Internal Server Error",
+      message: err.message,
+    });
+  }
+}
 
 /**
  * Create categories
