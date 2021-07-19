@@ -32,7 +32,7 @@ method.createDonature = async (req, res) => {
   }
 };
 
-// Get All Donation
+// Get All Donature
 method.getAllDonature = async (req, res) => {
   try {
     const result = await Donature.findAll({
@@ -49,7 +49,7 @@ method.getAllDonature = async (req, res) => {
   }
 };
 
-//GET Donatur by Id
+//GET Donature by Id
 method.getDonatureById = async (req, res) => {
   try {
     const result = await Donature.findAll({
