@@ -31,7 +31,7 @@ method.createPayment = async (req, res) => {
         where: { userId: user.id },
       });
 
-      let data = await Payment.create({
+      const data = await Payment.create({
         donatureId: donature.id,
         description: req.body.description,
         paymentReceipt: uploadRes.secure_url,
@@ -40,7 +40,7 @@ method.createPayment = async (req, res) => {
 
       res.status(200).json({
         statusText: "Payment Receipt has uploaded",
-        data: donature,
+        data: data,
       });
     }
   } catch (err) {
