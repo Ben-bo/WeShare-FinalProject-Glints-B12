@@ -1,5 +1,5 @@
 //==Import Models===================================================================================================================
-const { Payment } = require("../models");
+const { Payment, Donature, User } = require("../models");
 
 //==ORM===================================================================================================================
 const sequelize = require("sequelize");
@@ -23,15 +23,24 @@ method.createPayment = async (req, res) => {
         upload_preset: "payment_receipt",
       });
 
+      const user = await User.findOne({
+        where: { email: req.body.email },
+      });
+
+      const donature = await Donature.findOne({
+        where: { userId: user.id },
+      });
+
       let data = await Payment.create({
-        ...req.body,
+        donatureId: donature.id,
+        description: req.body.description,
         paymentReceipt: uploadRes.secure_url,
         cloudinary_id: uploadRes.public_id,
       });
 
       res.status(200).json({
         statusText: "Payment Receipt has uploaded",
-        data: data,
+        data: donature,
       });
     }
   } catch (err) {
