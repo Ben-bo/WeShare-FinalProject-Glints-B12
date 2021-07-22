@@ -17,6 +17,7 @@ method.createDonature = async (req, res) => {
       notes: req.body.notes,
       isAnonymous: req.body.isAnonymous,
       donationTypeId: req.body.donationTypeId,
+      isSelect: req.body.isSelect,
       donatureId: pivot.id,
     });
 
