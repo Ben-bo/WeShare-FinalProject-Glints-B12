@@ -49,7 +49,7 @@ donationController.create = async (req, res) => {
 
       res.status(status).send({
         status: status,
-        message: message,
+        message: message
       });
     }
   } catch (error) {
@@ -105,10 +105,17 @@ donationController.getAllById = async (req, res) => {
     // });
     //repair by Budi Hartono
     const dataDonation = await openDonationModel.findOne({
-      include: [
+      // include: [
+      //   categoryModel,
+      //   { model: openDonationDetailsModel, include: [donationTypeModel] },
+      //   { model: donatureModel, include: [userModel, informationModel] },
+      // ],
+       include: [
         categoryModel,
-        { model: openDonationDetailsModel, include: [donationTypeModel] },
-        { model: donatureModel, include: [userModel, informationModel] },
+        { model: openDonationDetailsModel, include: [
+        { model: donationTypeModel, include: [
+        { model: informationModel,include: [
+        { model: donatureModel, include: [userModel ]}] }] }] },
       ],
       where: { id: openDonationId },
     });
