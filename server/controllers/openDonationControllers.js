@@ -154,8 +154,7 @@ donationController.getAll = async (req, res) => {
         categoryModel,
         { model: openDonationDetailsModel, include: [
         { model: donationTypeModel, include: [
-        { model: informationModel,include: [
-        { model: donatureModel, include: [userModel ]}] }] }] },
+        { model: informationModel }] }] },
       ],
     });
     res.status(status).send({
