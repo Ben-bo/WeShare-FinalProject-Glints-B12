@@ -56,14 +56,14 @@ routes.register = async (req, res) => {
       let transporter = await nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: process.env.MAIL || "teamweshare22@gmail.com", // TODO: your gmail account
+          user: process.env.MAIL || "teamweshare4@gmail.com", // TODO: your gmail account
           pass: process.env.PASSWORD || "Weshare99", // TODO: your gmail password
         },
       });
 
       // mailOption
       let mailOptions = {
-        from: "teamweshare22@gmail.com", // TODO: email sender
+        from: "teamweshare4@gmail.com", // TODO: email sender
         to: userEmail, // TODO: email receiver
         subject: "WeShare Team - Registration Completed!",
         text: `Welcome to WeShare ${userEmail}, this is your terms details for Login!`,
@@ -147,14 +147,14 @@ routes.login = async (req, res, next) => {
     let transporter = await nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.MAIL || "teamweshare22@gmail.com", // TODO: your gmail account
+        user: process.env.MAIL || "teamweshare4@gmail.com", // TODO: your gmail account
         pass: process.env.PASSWORD || "Weshare99", // TODO: your gmail password
       },
     });
 
     // mailOption
     let mailOptions = {
-      from: "teamweshare22@gmail.com", // TODO: email sender
+      from: "teamweshare4@gmail.com", // TODO: email sender
       to: userEmail, // TODO: email receiver
       subject: "WeShare Team - New Login Detected!",
       text: `Welcome to WeShare ${userEmail}, New Login detected!`,
@@ -196,35 +196,35 @@ routes.putUser = async (req, res) => {
           upload_preset: "dev_setup",
         });
 
-      if (req.method === "PUT") {
-        const urls = [];
-        const files = req.files;
-        for (const file of files) {
-          const { path } = file;
-          const newPath = await uploadRes(path);
-          urls.push(newPath);
-          // fs.unlinkSync(path);
-          await User.update(
-            { ...req.body, image: newPath.url, cloudinaryId: newPath.public_id },
-            {
-              where: {
-                id: idParPut,
-              },
-            }
-          );
-          res.status(200).json({
-            statusText: "Updated",
-            message: `User with ID: ${idParPut} has been updated!`,
-            data: urls,
-          });
-          console.log(urls);
-        }
-      } else {
-        res.status(500).json({
-          statusText: "Internal server error",
-          message: "Methode don't support",
+      // if (req.method === "PUT") {
+      const urls = [];
+      const files = req.files;
+      for (const file of files) {
+        const { path } = file;
+        const newPath = await uploadRes(path);
+        urls.push(newPath);
+        // fs.unlinkSync(path);
+        await User.update(
+          { ...req.body, image: newPath.url, cloudinaryId: newPath.public_id },
+          {
+            where: {
+              id: idParPut,
+            },
+          }
+        );
+        res.status(200).json({
+          statusText: "Updated",
+          message: `User with ID: ${idParPut} has been updated!`,
+          data: urls,
         });
+        console.log(urls);
       }
+      // } else {
+      //   res.status(500).json({
+      //     statusText: "Internal server error",
+      //     message: "Methode don't support",
+      //   });
+      // }
     } else {
       res.status(404).json({
         statusText: "Not Found",
@@ -353,14 +353,14 @@ routes.forgetPassword = async (req, res) => {
         let transporter = await nodemailer.createTransport({
           service: "gmail",
           auth: {
-            user: process.env.MAIL || "teamweshare22@gmail.com", // TODO: your gmail account
+            user: process.env.MAIL || "teamweshare4@gmail.com", // TODO: your gmail account
             pass: process.env.PASSWORD || "Weshare99", // TODO: your gmail password
           },
         });
 
         // mailOption
         let mailOptions = {
-          from: "teamweshare22@gmail.com", // TODO: email sender
+          from: "teamweshare4@gmail.com", // TODO: email sender
           to: userEmail, // TODO: email receiver
           subject: "WeShare Team - Changed Password Request!",
           text: `Welcome to WeShare ${userEmail}, Changed Password Request!`,
