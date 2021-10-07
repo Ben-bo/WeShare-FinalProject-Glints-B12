@@ -10,6 +10,7 @@ exports.donatureValidate = async (req, res, next) => {
       isAnonymous: Joi.boolean().required(),
       donationTypeId: Joi.number().required(),
       donatureId: Joi.number().valid(null, ""),
+      isSelect: Joi.boolean().valid(null, ""),
     }).options({ abortEarly: false });
 
     const body = {
@@ -18,6 +19,7 @@ exports.donatureValidate = async (req, res, next) => {
       notes: req.body.notes,
       isAnonymous: req.body.isAnonymous,
       donationTypeId: req.body.donationTypeId,
+      isSelect: req.body.isSelect,
     };
     const validate = await schema.validate(body);
 

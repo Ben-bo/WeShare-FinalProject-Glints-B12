@@ -17,6 +17,7 @@ method.createDonature = async (req, res) => {
       notes: req.body.notes,
       isAnonymous: req.body.isAnonymous,
       donationTypeId: req.body.donationTypeId,
+      isSelect: req.body.isSelect,
       donatureId: pivot.id,
     });
 
@@ -32,7 +33,7 @@ method.createDonature = async (req, res) => {
   }
 };
 
-// Get All Donation
+// Get All Donature
 method.getAllDonature = async (req, res) => {
   try {
     const result = await Donature.findAll({
@@ -49,7 +50,7 @@ method.getAllDonature = async (req, res) => {
   }
 };
 
-//GET Donatur by Id
+//GET Donature by Id
 method.getDonatureById = async (req, res) => {
   try {
     const result = await Donature.findAll({

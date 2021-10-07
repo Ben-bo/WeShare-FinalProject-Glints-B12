@@ -10,9 +10,13 @@ const {
     getCategoryIdAndDonationTypeId,
     getAllDonationUrgent,
     getAllNewestDonation,
-    getDonationByTitle
+    getDonationByTitle,
+    getAllCategory,
+    getAllDonationType
 } = require("../controllers/categoryControllers");
 
+router.get("/allCategory", getAllCategory);
+router.get("/allDonationType", getAllDonationType);
 router.get("/category", getAllCategoryIncludeDonation);
 router.get("/category/details/:id", getCategoryById);
 router.get("/category/donation", getCategoryIdAndDonationTypeId);

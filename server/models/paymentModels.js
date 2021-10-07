@@ -28,10 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         foreignKey: true,
       },
-      paymentMethod: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       description: {
         type: DataTypes.STRING,
       },

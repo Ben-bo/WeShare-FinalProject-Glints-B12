@@ -17,7 +17,7 @@
 | POST   | /api/weShare/createDonature                      | create new donature                                 |
 | GET    | /api/weShare/allDonature                         | get all donature                                    |
 | GET    | /api/weShare/donatureById/:id                    | get donature by id                                  |
-| GET    | /api/weShare/myDonation                          | get my donation                                     |
+| GET    | /api/weShare/myDonation?UserId=1&Type=1          | get my donation by UserId and DonationTypeId        |
 | POST   | /api/weShare/openDonation/create                 | create new Open Donation                            |
 | GET    | /api/weShare/OpenDonation                        | get all Open Donation                               |
 | GET    | /api/weShare/OpenDonation/:idOpenDonation        | detail Open Donation                                |
@@ -29,8 +29,12 @@
 | GET    | /api/weShare/category/donationTitle              | Get openDonation by title                           |
 | GET    | /api/weShare/category/donation                   | Get Opendonation by category id and donationType id |
 | POST   | /api/weShare/createPayment                       | create payment                                      |
-
-# Last Update on (15 July 2021 | 23:00 WIB)
+| GET    | /api/weShare/getPayment                          | Get all payment                                     |
+| PUT    | /api/weShare/updatePayment/:id                   | update payment by id                                |
+| DELETE | /api/weShare/createPayment/:id                   | Delete payment by id                                |
+| GET    | /api/weShare/allCategory         | Get All Category    |
+| GET    | /api/weShare/allDonationType         | Get All Donation Type    |
+# Last Update on (19 July 2021 | 22:00 33)
 
 # -----------------------------------------
 
